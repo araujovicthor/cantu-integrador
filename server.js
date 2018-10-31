@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //Definindo a porta onde será executada a nossa api:
-var port = process.env.port || 5000;
+var port = process.env.port || 49143;
 
 //Rotas da nossa API:
 //=============================================================================
