@@ -20,13 +20,32 @@ var Schema = mongoose.Schema;
  */
 
 var ProdutoSchema = new Schema({
-    id_garagem: Number,
-    lat_garagem: Number,
-    long_garagem: Number,
-    id_equipto: Number,
-    radius: Number,
-    ppreco: Array,
-    pfrete: Array
+    taskId: Number,
+    idUserFrom: Number,
+    idUserTo: Number,
+    customerId: Number,
+    creationDate: Date,
+    taskDate: Date,
+    latitude: Number,
+    longitude: Number,
+    address: String,
+    orientation: String,
+    priority: Number,
+    deliveredOnSmarthPhone: Boolean,
+    deliveredDate: Date,
+    finished: Boolean,
+    report: String,
+    visualized: Boolean,
+    visualizedDate: Date,
+    checkIn: Boolean,
+    checkInDate: Date,
+    checkOut: Boolean,
+    checkOutDate: Date,
+    checkinManual: Boolean,
+    signatureBase64: String,
+    attachmentsBase64: Array,
+    checkList: Array
+
 });
 
 module.exports = mongoose.model('Produto', ProdutoSchema);
