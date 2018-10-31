@@ -72,20 +72,20 @@ const job = new CronJob('*/5 * * * * *', function() {
 	"&startDate="+ startDate +"&endDate="+ endDate;
 	console.log(url);
 
-	https.get(url, connection => {
-		connection.setEncoding("utf8"); // ler dados em encode correto
-		let tasks = "";      // variávavel somente para esse block
-		connection.on("data", data => { // ao res começar a receber o data, distance = data;
-			tasks += data;
-		});
-		connection.on("end",() => {   // ao res terminar de receber o data, executar fluxo;
-		  	try {
-				tasks = JSON.parse(tasks);
-			} catch (e) {
-			  	reject("Localização do pedido não possui rota de entrega!");
-		  	}
-		});
-	});	
+	const axios = require("axios");
+	
+	const getAUVO = async url => {
+	  try {
+		const response = await axios.get(url);
+		var data = response.data;
+		console.log(data);
+	  } catch (error) {
+		console.log(error);
+	  }
+	};
+	getAUVO(url);
+	
+
 })
 
 //	console.log(tasks);

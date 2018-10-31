@@ -11,6 +11,7 @@
     "url": ""
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "latest",
     "cron": "^1.5.0",
     "date-holidays": "^1.2.0",
