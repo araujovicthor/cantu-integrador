@@ -18,6 +18,8 @@ var methods = {
 		"&startDate="+ startDate +"&endDate="+ endDate;
 			
 		console.log(url);
+
+		return url;
 	},
 };
 
