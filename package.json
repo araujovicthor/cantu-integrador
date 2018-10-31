@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "body-parser": "latest",
+    "cron": "^1.5.0",
     "date-holidays": "^1.2.0",
     "express": "latest",
     "mongoose": "latest",
