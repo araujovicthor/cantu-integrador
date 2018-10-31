@@ -1,27 +1,29 @@
 {
-  "name": "node-api-crud",
+  "name": "api-civ-quotation",
   "version": "1.0.0",
-  "description": "Código desenvolvido durante a gravação das videos aulas sobre: CRUD com Node.Js + MongoDb + Express.js, através do meu canal do Youtube: [AQUI](https://www.youtube.com/user/l32759)",
-  "main": "server.js",
+  "description": "real time quotation",
+  "main": "node server.js",
   "scripts": {
     "dev": "nodemon"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/glaucia86/video-nodejs-mongo-restful-crud"
+    "url": ""
   },
   "dependencies": {
-    "body-parser": "~1.18.1",
-    "express": "~4.15.4",
-    "mongoose": "~4.11.12",
-    "request": "~2.82.0"
+    "body-parser": "latest",
+    "date-holidays": "^1.2.0",
+    "express": "latest",
+    "mongoose": "latest",
+    "request": "latest",
+    "which-country": "^1.0.0"
   },
-  "author": "Glaucia Lemos",
+  "author": "Victhor Araujo",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/glaucia86/video-nodejs-mongo-restful-crud/issues"
+    "url": ""
   },
-  "homepage": "https://github.com/glaucia86/video-nodejs-mongo-restful-crud#readme",
+  "homepage": "",
   "devDependencies": {
     "nodemon": "^1.12.1"
   }

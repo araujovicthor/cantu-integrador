@@ -20,9 +20,13 @@ var Schema = mongoose.Schema;
  */
 
 var ProdutoSchema = new Schema({
-    nome: String,
-    preco: Number,
-    descricao: String
+    id_garagem: Number,
+    lat_garagem: Number,
+    long_garagem: Number,
+    id_equipto: Number,
+    radius: Number,
+    ppreco: Array,
+    pfrete: Array
 });
 
 module.exports = mongoose.model('Produto', ProdutoSchema);
