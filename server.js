@@ -70,7 +70,7 @@ const job = new CronJob('*/5 * * * * *', function() {
 	var url =
 	"https://app.auvo.com.br/api/v1.0/tasks?appKey="+ appKey +"&token="+ token +
 	"&startDate="+ startDate +"&endDate="+ endDate;
-	//console.log(url);
+	console.log(url);
 
 	https.get(url, connection => {
 		connection.setEncoding("utf8"); // ler dados em encode correto
@@ -88,7 +88,7 @@ const job = new CronJob('*/5 * * * * *', function() {
 	});	
 })
 
-	console.log(tasks);
+//	console.log(tasks);
 
 console.log('After job instantiation');
 job.start();
