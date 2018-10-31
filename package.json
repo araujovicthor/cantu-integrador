@@ -1,50 +1,28 @@
 {
-  "name": "civ-quotation-lambda",
-  "version": "0.0.0",
-  "description": "AWS Lambda function to calculate  an order price",
-  "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
-  "jest": {
-    "testRegex": "tests/specs/.*\\.(js|jsx)$"
-  },
+  "name": "node-api-crud",
+  "version": "1.0.0",
+  "description": "Código desenvolvido durante a gravação das videos aulas sobre: CRUD com Node.Js + MongoDb + Express.js, através do meu canal do Youtube: [AQUI](https://www.youtube.com/user/l32759)",
+  "main": "server.js",
   "scripts": {
-    "test": "jest",
-    "test_debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
-    "lint": "./node_modules/.bin/eslint . ; exit 0",
-    "zip": "zip -r index.zip * -x \".git\" -x \"tests/*\" -x \".gitignore\" -x \".gitlab-ci.yml\" -x \"package-lock.json\" -x \"template.yaml\"",
-    "deploy_beta": "aws lambda update-function-code --function-name civQuotationFunctionHomolog --zip-file fileb://index.zip",
-    "deploy_prod": "aws lambda update-function-code --function-name civQuotationFunction --zip-file fileb://index.zip --publish"
+    "dev": "nodemon"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/equipe-civ/civ-quotation-function.git"
-  },
-  "author": "Victor Araujo, Erlan Cassiano and Mateus Luiz",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://gitlab.com/equipe-civ/civ-quotation-function/issues"
-  },
-  "homepage": "https://gitlab.com/equipe-civ/civ-quotation-function#README",
-  "devDependencies": {
-    "eslint": "^4.19.1",
-    "jest": "^22.4.2"
+    "url": "https://github.com/glaucia86/video-nodejs-mongo-restful-crud"
   },
   "dependencies": {
-    "@google/maps": "^0.4.5",
-    "aws-sdk": "^2.207.0",
-    "date-holidays": "^1.2.2",
-    "dotenv": "^5.0.1",
-    "http-routing": "^0.1.0",
-    "install": "^0.11.0",
-    "lodash": "^4.17.5",
-    "mockdate": "^2.0.2",
-    "moment": "^2.21.0",
-    "moment-timezone": "^0.5.14",
-    "moneysafe": "^1.1.0",
-    "node-uuid": "^1.4.8",
-    "npm": "^6.0.0",
-    "supertest": "^3.0.0"
+    "body-parser": "~1.18.1",
+    "express": "~4.15.4",
+    "mongoose": "~4.11.12",
+    "request": "~2.82.0"
+  },
+  "author": "Glaucia Lemos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/glaucia86/video-nodejs-mongo-restful-crud/issues"
+  },
+  "homepage": "https://github.com/glaucia86/video-nodejs-mongo-restful-crud#readme",
+  "devDependencies": {
+    "nodemon": "^1.12.1"
   }
 }
