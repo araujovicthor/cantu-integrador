@@ -19,6 +19,7 @@ var Order = require('./app/models/order');
 var Holidays = require('date-holidays');
 var hd = new Holidays();
 var wc = require('which-country');
+var fx = require('./repoFunction.js');
 
 mongoose.Promise = global.Promise;
 
@@ -58,6 +59,10 @@ router.get('/', function(req, res) {
 
 //API's:
 //==============================================================================
+
+router.get('/auvo'), function(req, res) {
+    var teste = fx.pushAuvo();
+}
 
 
 //Definindo um padrão das rotas prefixadas: '/api':
