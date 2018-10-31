@@ -1,0 +1,28 @@
+GarageEquipment:
+  id: Integer
+  latitude: Float
+  longitude: Float
+  equipment_id: Integer
+  radius: Float # Raio de atuação da Garagem
+  rent_price_polcy: Array
+    days: Number
+    price: Number
+  shipping_price_policy: Array
+    km: Number
+    price: Number
+
+OrderInfo:
+  id: Integer
+  created_at: Integer
+  latitude: Float
+  longitude: Float
+  delivery_date: Date
+  retrieve_date: Date
+  prices:
+    owner: Number
+    full: Number
+  garages_available: Array
+    id: Number
+    full_price: Number
+    rent_price: Number
+    shipping_price: Number

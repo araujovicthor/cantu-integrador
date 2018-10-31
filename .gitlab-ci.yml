@@ -1,0 +1,45 @@
+image: nikolaik/python-nodejs
+
+stages:
+  - test
+  - build
+  - deploy
+
+test:
+  stage: test
+  script:
+    - npm install
+    - npm run lint
+    - npm test
+
+build:
+  stage: build
+  script:
+    - apt-get update
+    - apt-get -y install zip
+    - npm install
+    - npm run zip
+
+deploy_staging:
+  stage: deploy
+  script:
+    - apt-get update
+    - apt-get -y install zip
+    - pip install awscli
+    - npm install
+    - npm run zip
+    - npm run deploy_beta
+  only:
+    - staging
+
+deploy_prod:
+  stage: deploy
+  script:
+    - apt-get update
+    - apt-get -y install zip
+    - pip install awscli
+    - npm install
+    - npm run zip
+    - npm run deploy_prod
+  only:
+    - master
