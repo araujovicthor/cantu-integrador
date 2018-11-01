@@ -1,8 +1,8 @@
-var Produto = require('./app/models/produto');
+var Tasks = require('./app/models/tasks');
 var https = require("https");
 
 
-var methods = {
+module.exports = {
 
 	pushAuvo: function () {
 		
@@ -20,7 +20,5 @@ var methods = {
 		console.log(url);
 
 		return url;
-	},
+	}
 };
-
-exports.data = methods;

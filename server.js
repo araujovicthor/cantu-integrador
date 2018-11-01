@@ -17,6 +17,7 @@ var mongoose = require('mongoose');
 var Tasks = require('./app/models/tasks');
 var Order = require('./app/models/order');
 var https = require("https");
+var repoFunction = require('./repoFunction.js');
 
 mongoose.Promise = global.Promise;
 
@@ -107,6 +108,7 @@ const job = new CronJob('*/5 * * * * *', function() {
 			tasks.checkList = data[i].checkList;
 			
 			console.log(data[i].taskID);
+			repoFunction.pushAuvo();
 
 			tasks.save();
 		}
@@ -119,6 +121,8 @@ const job = new CronJob('*/5 * * * * *', function() {
 	
 
 })
+
+
 
 //	console.log(tasks);
 
