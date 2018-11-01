@@ -20,5 +20,66 @@ module.exports = {
 		console.log(url);
 
 		return url;
+	},
+
+	checkIDFromAuvo:  function(taskID_Now, callback) {
+		return tasks.find({taskID:taskID_Now},function(err, tasks){
+			if(err){            
+			console.log(err);
+			}
+		}).then(function(tasks) {
+			if (tasks.length === 0) {
+				console.log('taksID não encontrado no DB.');
+				var check = false;
+				return check;
+			} else {
+				console.log('taksID encontrado no DB.');
+				var check = true;
+				return check;
+			}
+		})
+		
+	},
+
+	checkcheckOutFromAuvo:  function(checkOut_Now, callback) {
+		return tasks.find({checkOut:checkOut_Now},function(err, tasks){
+			if(err){            
+			console.log(err);
+			}
+		}).then(function(tasks) {
+			if (tasks.length === 0) {
+				console.log('checkOut da taskID é FALSE');
+				var check = false;
+				return check;
+			} else {
+				console.log('checkOut da taskID é TRUE');
+				var check = true;
+				return check;
+			}
+		})
+		
+	},
+
+	editcheckOutFromAuvo:  
+	Produto.forEach(function(result4){
+		radius.push(result4.radius);
+		
+		function(checkOut_Now, callback) {
+		return tasks.find({checkOut:checkOut_Now},function(err, tasks){
+			if(err){            
+			console.log(err);
+			}
+		}).then(function(tasks) {
+			if (tasks.length === 0) {
+				console.log('checkOut da taskID é FALSE');
+				var check = false;
+				return check;
+			} else {
+				console.log('checkOut da taskID é TRUE');
+				var check = true;
+				return check;
+			}
+		})
+		
 	}
 };
