@@ -169,25 +169,7 @@ module.exports = {
 		person.taskStatus = taskStatus;
 		person.taskID = data.taskID
  		person.save();
- 		// //Cria user no Pipedrive
-		// var tokenPipedrive = "204369674ebaff427f06a5ab1e4e0bef2fe10c1a";
-		// var urlPipe = "https://api.pipedrive.com/v1/persons?api_token="+ tokenPipedrive;
-		// axios({
-		// 	method: 'post',
-		// 	url: 'https://api.pipedrive.com/v1/persons?api_token=204369674ebaff427f06a5ab1e4e0bef2fe10c1a',
-		// 	headers: {
-		// 		Accept: 'application/json'
-		// 	},
-		// 	body: {
-		// 		name: 'personName',
-		// 		email: 'personEmail',
-		// 		phone: 'personPhone'
-		// 	}
-		//});
-	//}
-
-		person.save();
-
+ 		
 		//Cria user no Pipedrive
 		var tokenPipedrive = "204369674ebaff427f06a5ab1e4e0bef2fe10c1a";
 		var urlPipe = "https://api.pipedrive.com/v1/persons?api_token="+ tokenPipedrive;
