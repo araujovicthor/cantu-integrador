@@ -180,9 +180,9 @@ module.exports = {
 				Accept: 'application/json'
 			},
 			body: {
-				name: 'personName',
-				email: 'personEmail',
-				phone: 'personPhone'
+				name: 'erlanteste',
+				email: 'erlan@email.com',
+				phone: '1231421421'
 			}
 		});
 
