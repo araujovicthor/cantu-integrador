@@ -22,6 +22,7 @@ module.exports = {
 		return url;
 	},
 
+<<<<<<< HEAD
 	checkIDFromAuvo:  function(taskID_Now, callback) {
 		return tasks.find({taskID:taskID_Now},function(err, tasks){
 			if(err){            
@@ -81,5 +82,38 @@ module.exports = {
 			}
 		})
 		
+=======
+	newFromAuvo: function (data) {
+		var tasks = new Tasks();
+		tasks.taskID = data.taskID;
+		tasks.idUserFrom = data.idUserFrom;
+		tasks.idUserTo = data.idUserTo;
+    	tasks.customerId = data.customerId;
+    	tasks.creationDate = data.creationDate;
+    	tasks.taskDate = data.taskDate;
+    	tasks.latitude = data.latitude;
+    	tasks.longitude = data.longitude;
+    	tasks.address = data.address;
+    	tasks.orientation = data.orientation;
+    	tasks.priority = data.priority;
+    	tasks.deliveredOnSmarthPhone = data.deliveredOnSmarthPhone;
+    	tasks.deliveredDate = data.deliveredDate;
+    	tasks.finished = data.finished;
+    	tasks.report = data.report;
+    	tasks.visualized = data.visualized;
+    	tasks.visualizedDate = data.visualizedDate;
+    	tasks.checkIn = data.checkIn;
+    	tasks.checkInDate = data.checkInDate;
+    	tasks.checkOut = data.checkOut;
+    	tasks.checkOutDate = data.checkOutDate;
+    	tasks.checkinManual = data.checkinManual;
+    	tasks.signatureBase64 = data.signatureBase64;
+    	tasks.attachmentsBase64 = data.attachmentsBase64;
+		tasks.checkList = data.checkList;
+					
+		tasks.save();
+
+		console.log(data.taskID);
+>>>>>>> f69faa6e9c705111e7914e78de14f07db89f2bd6
 	}
 };
