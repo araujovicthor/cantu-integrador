@@ -15,7 +15,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var Tasks = require('./app/models/tasks');
-var Order = require('./app/models/order');
+var Person = require('./app/models/person');
 var https = require("https");
 var repoFunction = require('./repoFunction.js');
 
@@ -59,8 +59,8 @@ router.get('/', function(req, res) {
 
 var appKey = "0ANrY1kgphIThAA04S4FiEajGw3ub";
 var token = "0ANrY1kgB33FfWZ3URadMJTgcfv";
-var startDate = "2018-10-31T08:00:00";
-var endDate = "2019-10-30T18:00:00";
+var startDate = "2018-11-20T00:00:01";
+var endDate = "2018-11-20T23:59:59";
 
 const CronJob = require('cron').CronJob;
 console.log('Cron for every minute');
@@ -84,11 +84,10 @@ const job = new CronJob('*/5 * * * * *', function() {
 			var checkIdExistente = await repoFunction.checkIDFromAuvo(data[i].taskID);
 			console.log(checkIdExistente);
 			if (checkIdExistente==true) {
-				console.log('Já tem cadastro, nada a fazer');
+				//console.log('Já tem cadastro, nada a fazer');
 			} else { 
 				repoFunction.newFromAuvo(data[i]);
 			}
-						
 		}
 
 	  } catch (error) {
