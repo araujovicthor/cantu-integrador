@@ -151,6 +151,42 @@ module.exports = {
 		tasks.save();
 
 		console.log(data.taskID);
+		var person = new Person();
+		var sep1 = data.orientation.split("Nome do cliente: ").pop();
+		var personName = sep1.split("; Email do cliente: ").shift();
+		person.personName = personName;
+		var sep1 = data.orientation.split("Email do cliente: ").pop();
+		var personEmail = sep1.split("; Telefone do cliente").shift();
+		person.personEmail = personEmail;
+		var sep1 = data.orientation.split("Telefone do cliente: ").pop();
+		var personPhone = sep1.split("; Link do imóvel").shift();
+		person.personPhone = personPhone;
+		var sep1 = data.orientation.split("Link do imóvel: ").pop();
+		var imovelURL = sep1.split("; Status da visita").shift();
+		person.imovelURL = imovelURL;
+		var sep1 = data.orientation.split("Status da visita: ").pop();
+		var taskStatus = sep1.split(";").shift();
+		person.taskStatus = taskStatus;
+		person.taskID = data.taskID
+
+		person.save();
+
+		//Cria user no Pipedrive
+		var tokenPipedrive = "204369674ebaff427f06a5ab1e4e0bef2fe10c1a";
+		var urlPipe = "https://api.pipedrive.com/v1/persons?api_token="+ tokenPipedrive;
+		axios({
+			method: 'post',
+			url: 'https://api.pipedrive.com/v1/persons?api_token=204369674ebaff427f06a5ab1e4e0bef2fe10c1a',
+			headers: {
+				Accept: 'application/json'
+			},
+			body: {
+				name: 'personName',
+				email: 'personEmail',
+				phone: 'personPhone'
+			}
+		});
+
 	},
 
 	reminderFromAuvo: function (data) {
@@ -161,41 +197,5 @@ module.exports = {
 		tasks.save();
 
 	},
-
-	var person = new Person();
-	var sep1 = data.orientation.split("Nome do cliente: ").pop();
-	var personName = sep1.split("; Email do cliente: ").shift();
-	person.personName = personName;
-	var sep1 = data.orientation.split("Email do cliente: ").pop();
-	var personEmail = sep1.split("; Telefone do cliente").shift();
-	person.personEmail = personEmail;
-	var sep1 = data.orientation.split("Telefone do cliente: ").pop();
-	var personPhone = sep1.split("; Link do imóvel").shift();
-	person.personPhone = personPhone;
-	var sep1 = data.orientation.split("Link do imóvel: ").pop();
-	var imovelURL = sep1.split("; Status da visita").shift();
-	person.imovelURL = imovelURL;
-	var sep1 = data.orientation.split("Status da visita: ").pop();
-	var taskStatus = sep1.split(";").shift();
-	person.taskStatus = taskStatus;
-	person.taskID = data.taskID
-
-	person.save();
-
-	//Cria user no Pipedrive
-	var tokenPipedrive = "204369674ebaff427f06a5ab1e4e0bef2fe10c1a";
-	var urlPipe = "https://api.pipedrive.com/v1/persons?api_token="+ tokenPipedrive;
-	axios({
-		method: 'post',
-		url: 'https://api.pipedrive.com/v1/persons?api_token=204369674ebaff427f06a5ab1e4e0bef2fe10c1a',
-		headers: {
-			Accept: 'application/json'
-		},
-		body: {
-			name: 'personName',
-			email: 'personEmail',
-			phone: 'personPhone'
-		}
-	});
 
 };

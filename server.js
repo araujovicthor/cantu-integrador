@@ -135,14 +135,11 @@ const job = new CronJob('*/5 * * * * *', function() {
 							console.log('Não vou fazer nada!');
 						}
 				}
-
-				//console.log('Já tem cadastro, nada a fazer');
 			} else { 
 				console.log('Gravando nova taskID no banco');
 				//repoFunction.newFromAuvo(data[i]);
 			}
 		}
-
 	  } catch (error) {
 		console.log(error);
 	  }
