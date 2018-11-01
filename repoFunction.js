@@ -2,10 +2,7 @@ var Tasks = require('./app/models/tasks');
 var Person = require('./app/models/person');
 var https = require("https");
 const axios = require("axios");
-<<<<<<< HEAD
-=======
 
->>>>>>> ca607d133003e0f9794822ba4a977d1affe651bb
 
 module.exports = {
 
@@ -121,10 +118,7 @@ module.exports = {
 		
 	},
 
-<<<<<<< HEAD
-=======
 	
->>>>>>> ca607d133003e0f9794822ba4a977d1affe651bb
 	newFromAuvo: function (data) {
 			var tasks = new Tasks();
 			tasks.taskID = data.taskID;
@@ -156,10 +150,7 @@ module.exports = {
 					
 		tasks.save();
 
-<<<<<<< HEAD
-=======
 		console.log(data.taskID);
->>>>>>> ca607d133003e0f9794822ba4a977d1affe651bb
 		var person = new Person();
 		var sep1 = data.orientation.split("Nome do cliente: ").pop();
 		var personName = sep1.split("; Email do cliente: ").shift();
@@ -177,7 +168,6 @@ module.exports = {
 		var taskStatus = sep1.split(";").shift();
 		person.taskStatus = taskStatus;
 		person.taskID = data.taskID
-<<<<<<< HEAD
  		person.save();
  		// //Cria user no Pipedrive
 		// var tokenPipedrive = "204369674ebaff427f06a5ab1e4e0bef2fe10c1a";
@@ -193,9 +183,8 @@ module.exports = {
 		// 		email: 'personEmail',
 		// 		phone: 'personPhone'
 		// 	}
-		});
-	}
-=======
+		//});
+	//}
 
 		person.save();
 
@@ -226,5 +215,4 @@ module.exports = {
 
 	},
 
->>>>>>> ca607d133003e0f9794822ba4a977d1affe651bb
 };
