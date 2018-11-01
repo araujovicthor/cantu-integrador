@@ -78,7 +78,10 @@ const job = new CronJob('*/5 * * * * *', function() {
 	  try {
 		const response = await axios.get(url);
 		var data = response.data;
-		console.log(data[0].taskID);
+		
+		for (var i = 0; i < data.length; i++) {
+		console.log(data[i].taskID);
+		}
 
 	  } catch (error) {
 		console.log(error);
