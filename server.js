@@ -14,7 +14,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var Produto = require('./app/models/produto');
+var Tasks = require('./app/models/tasks');
 var Order = require('./app/models/order');
 var https = require("https");
 
@@ -70,8 +70,7 @@ const job = new CronJob('*/5 * * * * *', function() {
 	var url =
 	"https://app.auvo.com.br/api/v1.0/tasks?appKey="+ appKey +"&token="+ token +
 	"&startDate="+ startDate +"&endDate="+ endDate;
-	console.log(url);
-
+	
 	const axios = require("axios");
 	
 	const getAUVO = async url => {
@@ -80,7 +79,36 @@ const job = new CronJob('*/5 * * * * *', function() {
 		var data = response.data;
 		
 		for (var i = 0; i < data.length; i++) {
-		console.log(data[i].taskID);
+			var tasks = new Tasks();
+			tasks.taskID = data[i].taskID;
+		    tasks.idUserFrom = data[i].idUserFrom;
+		    tasks.idUserTo = data[i].idUserTo;
+    		tasks.customerId = data[i].customerId;
+    		tasks.creationDate = data[i].creationDate;
+    		tasks.taskDate = data[i].taskDate;
+    		tasks.latitude = data[i].latitude;
+    		tasks.longitude = data[i].longitude;
+    		tasks.address = data[i].address;
+    		tasks.orientation = data[i].orientation;
+    		tasks.priority = data[i].priority;
+    		tasks.deliveredOnSmarthPhone = data[i].deliveredOnSmarthPhone;
+    		tasks.deliveredDate = data[i].deliveredDate;
+    		tasks.finished = data[i].finished;
+    		tasks.report = data[i].report;
+    		tasks.visualized = data[i].visualized;
+    		tasks.visualizedDate = data[i].visualizedDate;
+    		tasks.checkIn = data[i].checkIn;
+    		tasks.checkInDate = data[i].checkInDate;
+    		tasks.checkOut = data[i].checkOut;
+    		tasks.checkOutDate = data[i].checkOutDate;
+    		tasks.checkinManual = data[i].checkinManual;
+    		tasks.signatureBase64 = data[i].signatureBase64;
+    		tasks.attachmentsBase64 = data[i].attachmentsBase64;
+			tasks.checkList = data[i].checkList;
+			
+			console.log(data[i].taskID);
+
+			tasks.save();
 		}
 
 	  } catch (error) {

@@ -19,8 +19,8 @@ var Schema = mongoose.Schema;
  * 
  */
 
-var ProdutoSchema = new Schema({
-    taskId: Number,
+var TasksSchema = new Schema({
+    taskID: Number,
     idUserFrom: Number,
     idUserTo: Number,
     customerId: Number,
@@ -30,7 +30,7 @@ var ProdutoSchema = new Schema({
     longitude: Number,
     address: String,
     orientation: String,
-    priority: Number,
+    priority: String,
     deliveredOnSmarthPhone: Boolean,
     deliveredDate: Date,
     finished: Boolean,
@@ -46,6 +46,8 @@ var ProdutoSchema = new Schema({
     attachmentsBase64: Array,
     checkList: Array
 
+    
+
 });
 
-module.exports = mongoose.model('Produto', ProdutoSchema);
+module.exports = mongoose.model('Tasks', TasksSchema);
