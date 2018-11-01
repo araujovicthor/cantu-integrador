@@ -61,10 +61,7 @@ var appKey = "0ANrY1kgphIThAA04S4FiEajGw3ub";
 var token = "0ANrY1kgB33FfWZ3URadMJTgcfv";
 var startDate = "2018-11-20T00:00:01";
 var endDate = "2018-11-20T23:59:59";
-<<<<<<< HEAD
 
-=======
->>>>>>> dfda9cc1a08f6fbec98d414e2c9b9878747abe40
 
 const CronJob = require('cron').CronJob;
 console.log('Cron for every minute');
@@ -88,7 +85,6 @@ const job = new CronJob('*/5 * * * * *', function() {
 			var checkIdExistente = await repoFunction.checkIDFromAuvo(data[i].taskID);
 			console.log(checkIdExistente);
 			if (checkIdExistente==true) {
-<<<<<<< HEAD
 				console.log('O taskID já tem cadastrado no banco de dados.');
 				console.log('Checando se o checkOut foi realizado...');
 
@@ -140,9 +136,7 @@ const job = new CronJob('*/5 * * * * *', function() {
 						}
 				}
 
-=======
 				//console.log('Já tem cadastro, nada a fazer');
->>>>>>> dfda9cc1a08f6fbec98d414e2c9b9878747abe40
 			} else { 
 				console.log('Gravando nova taskID no banco');
 				//repoFunction.newFromAuvo(data[i]);
