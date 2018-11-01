@@ -61,6 +61,10 @@ var appKey = "0ANrY1kgphIThAA04S4FiEajGw3ub";
 var token = "0ANrY1kgB33FfWZ3URadMJTgcfv";
 var startDate = "2018-11-20T00:00:01";
 var endDate = "2018-11-20T23:59:59";
+<<<<<<< HEAD
+=======
+
+>>>>>>> ca607d133003e0f9794822ba4a977d1affe651bb
 
 const CronJob = require('cron').CronJob;
 console.log('Cron for every minute');
