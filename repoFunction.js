@@ -42,18 +42,18 @@ module.exports = {
 		
 	},
 
-	checkcheckOutFromAuvo:  function(checkOut_Now, callback) {
-		return tasks.find({checkOut:checkOut_Now},function(err, tasks){
+	checkOutFromAuvo: async function(checkOut_Now, callback) {
+		return Tasks.find({checkOut:true},function(err, tasks){
 			if(err){            
 			console.log(err);
 			}
 		}).then(function(tasks) {
 			if (tasks.length === 0) {
-				console.log('checkOut da taskID é FALSE');
+				console.log('CheckOut não realizado na verificação da função.');
 				var check = false;
 				return check;
 			} else {
-				console.log('checkOut da taskID é TRUE');
+				console.log('CheckOut realizado na verificação da função.');
 				var check = true;
 				return check;
 			}
@@ -61,6 +61,62 @@ module.exports = {
 		
 	},
 
+	checkFinishedFromAuvo: async function(finished_Now, callback) {
+		return Tasks.find({finished:true},function(err, tasks){
+			if(err){            
+			console.log(err);
+			}
+		}).then(function(tasks) {
+			if (tasks.length === 0) {
+				console.log('Não finalizado na verificação da função.');
+				var check = false;
+				return check;
+			} else {
+				console.log('Finalizado na verificação da função.');
+				var check = true;
+				return check;
+			}
+			//console.log(check);
+		})
+		
+	},
+
+	checkReminderFromAuvo: async function(reminder_Now, callback) {
+		return Tasks.find({reminder:true},function(err, tasks){
+			if(err){            
+			console.log(err);
+			}
+		}).then(function(tasks) {
+			if (tasks.length === 0) {
+				console.log('O lembrete ainda não foi enviado na verificação da função.');
+				var check = false;
+				return check;
+			} else {
+				console.log('O lembrete já foi enviado na verificação da função.');
+				var check = true;
+				return check;
+			}
+			//console.log(check);
+		})
+		
+	},
+
+	checkDateFromAuvo: async function(date_Now, callback) {
+		return Tasks.find({taskDate:date_Now},function(err, tasks){
+			if(err){            
+			console.log(err);
+			}
+		}).then(function(tasks) {
+			
+				console.log('verificando data = false');
+				var check = false;
+				return check;
+			
+		})
+		
+	},
+
+	
 	newFromAuvo: function (data) {
 		var tasks = new Tasks();
 		tasks.taskID = data.taskID;
@@ -88,6 +144,16 @@ module.exports = {
     	tasks.signatureBase64 = data.signatureBase64;
     	tasks.attachmentsBase64 = data.attachmentsBase64;
 		tasks.checkList = data.checkList;
+		tasks.reminder = false;
+					
+		tasks.save();
+
+		console.log(data.taskID);
+	},
+
+	reminderFromAuvo: function (data) {
+		var tasks = new Tasks();
+		tasks.reminder = true;
 					
 		tasks.save();
 
