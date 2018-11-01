@@ -22,22 +22,22 @@ module.exports = {
 		return url;
 	},
 
-<<<<<<< HEAD
-	checkIDFromAuvo:  function(taskID_Now, callback) {
-		return tasks.find({taskID:taskID_Now},function(err, tasks){
+	checkIDFromAuvo: async function(taskID_Now, callback) {
+		return Tasks.find({taskID:taskID_Now},function(err, tasks){
 			if(err){            
 			console.log(err);
 			}
 		}).then(function(tasks) {
 			if (tasks.length === 0) {
-				console.log('taksID não encontrado no DB.');
+				console.log(taskID_Now + ' não encontrado no DB.');
 				var check = false;
 				return check;
 			} else {
-				console.log('taksID encontrado no DB.');
+				console.log(taskID_Now + ' encontrado no DB.');
 				var check = true;
 				return check;
 			}
+			//console.log(check);
 		})
 		
 	},
@@ -61,28 +61,6 @@ module.exports = {
 		
 	},
 
-	editcheckOutFromAuvo:  
-	Produto.forEach(function(result4){
-		radius.push(result4.radius);
-		
-		function(checkOut_Now, callback) {
-		return tasks.find({checkOut:checkOut_Now},function(err, tasks){
-			if(err){            
-			console.log(err);
-			}
-		}).then(function(tasks) {
-			if (tasks.length === 0) {
-				console.log('checkOut da taskID é FALSE');
-				var check = false;
-				return check;
-			} else {
-				console.log('checkOut da taskID é TRUE');
-				var check = true;
-				return check;
-			}
-		})
-		
-=======
 	newFromAuvo: function (data) {
 		var tasks = new Tasks();
 		tasks.taskID = data.taskID;
@@ -114,6 +92,5 @@ module.exports = {
 		tasks.save();
 
 		console.log(data.taskID);
->>>>>>> f69faa6e9c705111e7914e78de14f07db89f2bd6
 	}
 };

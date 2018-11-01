@@ -80,7 +80,15 @@ const job = new CronJob('*/5 * * * * *', function() {
 		var data = response.data;
 		
 		for (var i = 0; i < data.length; i++) {
-			repoFunction.newFromAuvo(data[i]);
+			
+			var checkIdExistente = await repoFunction.checkIDFromAuvo(data[i].taskID);
+			console.log(checkIdExistente);
+			if (checkIdExistente==true) {
+				console.log('Já tem cadastro, nada a fazer');
+			} else { 
+				repoFunction.newFromAuvo(data[i]);
+			}
+						
 		}
 
 	  } catch (error) {
