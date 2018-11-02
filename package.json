@@ -17,9 +17,9 @@
     "date-holidays": "^1.2.0",
     "express": "latest",
     "mongoose": "latest",
+    "pipedrive": "^6.0.2",
     "request": "latest",
-    "which-country": "^1.0.0",
-    "pipedrive": "^6.0.2"
+    "which-country": "^1.0.0"
   },
   "author": "Victhor Araujo",
   "license": "MIT",
