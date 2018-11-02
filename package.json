@@ -18,7 +18,8 @@
     "express": "latest",
     "mongoose": "latest",
     "request": "latest",
-    "which-country": "^1.0.0"
+    "which-country": "^1.0.0",
+    "pipedrive": "^6.0.2"
   },
   "author": "Victhor Araujo",
   "license": "MIT",
