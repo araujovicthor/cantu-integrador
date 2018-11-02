@@ -1,6 +1,7 @@
 var Tasks = require('./app/models/tasks');
 var Person = require('./app/models/person');
 var https = require("https");
+var Pipedrive = require("pipedrive");
 const axios = require("axios");
 
 
@@ -135,10 +136,10 @@ module.exports = {
 
 	
 	newFromAuvo: function (data) {
-			var tasks = new Tasks();
-			tasks.taskID = data.taskID;
-			tasks.idUserFrom = data.idUserFrom;
-			tasks.idUserTo = data.idUserTo;
+		var tasks = new Tasks();
+		tasks.taskID = data.taskID;
+		tasks.idUserFrom = data.idUserFrom;
+		tasks.idUserTo = data.idUserTo;
     	tasks.customerId = data.customerId;
     	tasks.creationDate = data.creationDate;
     	tasks.taskDate = data.taskDate;
@@ -186,20 +187,26 @@ module.exports = {
  		person.save();
  		
 		//Cria user no Pipedrive
-		var tokenPipedrive = "204369674ebaff427f06a5ab1e4e0bef2fe10c1a";
-		var urlPipe = "https://api.pipedrive.com/v1/persons?api_token="+ tokenPipedrive;
-		axios({
-			method: 'post',
-			url: 'https://api.pipedrive.com/v1/persons?api_token=204369674ebaff427f06a5ab1e4e0bef2fe10c1a',
-			headers: {
-				Accept: 'application/json'
-			},
-			body: {
-				name: 'erlanteste',
-				email: 'erlan@email.com',
-				phone: '1231421421'
-			}
-		});
+		var pipedrive = new Pipedrive.Client('204369674ebaff427f06a5ab1e4e0bef2fe10c1a', { strictMode: true });
+		var personID = 999;
+		console.log(personID);
+		pipedrive.Persons.add ({name: personName, email: personEmail, phone: personPhone}, personID);
+		console.log(personID);
+		
+		//var tokenPipedrive = "204369674ebaff427f06a5ab1e4e0bef2fe10c1a";
+		//var urlPipe = "https://api.pipedrive.com/v1/persons?api_token="+ tokenPipedrive;
+		// axios({
+		// 	method: 'post',
+		// 	url: 'https://api.pipedrive.com/v1/persons?api_token=204369674ebaff427f06a5ab1e4e0bef2fe10c1a',
+		// 	headers: {
+		// 		Accept: 'application/json'
+		// 	},
+		// 	body: {
+		// 		name: 'personName',
+		// 		email: 'personEmail',
+		// 		phone: 'personPhone'
+		// 	}
+		// });
 
 	},
 
