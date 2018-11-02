@@ -110,11 +110,11 @@ const job = new CronJob('*/5 * * * * *', function() {
 				} else { 
 					console.log('CheckOut não realizado!');
 
-					console.log('Checando se foi falta menos de 24hs...');
+					console.log('Checando se foi falta menos de 36hs...');
 						var checkDate = await repoFunction.checkDateFromAuvo(data[i].taskDate);
 						console.log(checkDate);
 						if (checkDate == true) {
-							console.log('Falta menos de 24hs!');
+							console.log('Falta menos de 36hs!');
 							
 							console.log('Checando se lembrete ja foi enviado...');
 							var checkReminder = await repoFunction.checkReminderFromAuvo(data[i].reminder);

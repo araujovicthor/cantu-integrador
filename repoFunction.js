@@ -109,10 +109,25 @@ module.exports = {
 			console.log(err);
 			}
 		}).then(function(tasks) {
-			
-				console.log('verificando data = false');
+			var retdate = new Date();
+			retdate.setDate(retdate.getDate()-1);
+			var mydatestring = '2016-07-26T09:29:05.00';
+			var mydate = new Date(mydatestring);
+
+			var difference = retdate - mydate; // difference in milliseconds
+
+			const TOTAL_MILLISECONDS_IN_A_DAY = 1000 * 60 * 24 * 1.5;
+
+			if (Math.floor(difference / TOTAL_MILLISECONDS_IN_A_DAY) >= 1.5) {
+				console.log("Ainda falta mais que 36h para a visita na verificação da função.");
 				var check = false;
 				return check;
+			}else {
+				console.log('Ainda falta menos que 36h para a visita na verificação da função.');
+				var check = true;
+				return check;
+			}
+				
 			
 		})
 		
