@@ -173,10 +173,17 @@ module.exports = {
  		
 		//Cria user no Pipedrive
 		var pipedrive = new Pipedrive.Client('204369674ebaff427f06a5ab1e4e0bef2fe10c1a', { strictMode: true });
-		var personID = 999;
-		console.log(personID);
-		pipedrive.Persons.add ({name: personName, email: personEmail, phone: personPhone}, personID);
-		console.log(personID);
+		//var personID = 999;
+		//console.log(personID);
+		pipedrive.Persons.add ({name: personName, email: personEmail, phone: personPhone}, function(err, personPipedrive) {
+			if (err) throw err;
+			console.log(personPipedrive.id);
+		}).then(
+		pipedrive.Deals.add ({title: personName, person_id: personPipedrive.id, taskID: data.taskID}, function(err, dealsPipedrive) {
+			if (err) throw err;
+			console.log(dealsPipedrive.id);
+		}))
+		//console.log(personID);
 		
 		//var tokenPipedrive = "204369674ebaff427f06a5ab1e4e0bef2fe10c1a";
 		//var urlPipe = "https://api.pipedrive.com/v1/persons?api_token="+ tokenPipedrive;
