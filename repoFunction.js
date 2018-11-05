@@ -3,16 +3,56 @@ var Person = require('./app/models/person');
 var https = require("https");
 var Pipedrive = require("pipedrive");
 const axios = require("axios");
+var twilio = require('twilio');
 
 
 module.exports = {
+	sendSMSTwilio_Reminder: function (personPhone, address,taskDate, callback) {
+		
+		var twilio = require('twilio');
+        // Download the helper library from https://www.twilio.com/docs/node/install
+		// Your Account Sid and Auth Token from twilio.com/console
+		const accountSid = 'ACe77c5f758168c9a356897d57b7b84001';
+		const authToken = '4d7f1ffd299f2d28ae711be88c0c5e6f';
+		const client = require('twilio')(accountSid, authToken);
+        
+		client.messages
+		.create({
+			body: 'Lembrete da sua visita ao imóvel no endereço'+ adress + 'na data e horario' + taskDate,
+			from: '+12729992601',
+			to: '+55'+personPhone
+		})
+		.then(message => console.log(message.sid))
+		.done();
+
+	},
+
+	sendSMSTwilio_Evaluation: function (personPhone, taskID, callback) {
+		
+		var twilio = require('twilio');
+        // Download the helper library from https://www.twilio.com/docs/node/install
+		// Your Account Sid and Auth Token from twilio.com/console
+		const accountSid = 'ACe77c5f758168c9a356897d57b7b84001';
+		const authToken = '4d7f1ffd299f2d28ae711be88c0c5e6f';
+		const client = require('twilio')(accountSid, authToken);
+        
+		client.messages
+		.create({
+			body: 'Faça uma proposta e avalie o imóvel clicando no link: ' + 'https://docs.google.com/forms/d/e/1FAIpQLSetHqCn5Oe3kStTZJ3qFT_9lbS-Dvlf4zAXGG-KEQxcuyDhkw/viewform?usp=pp_url&entry.725776407='+taskID + 'Atenciosamente, Imobiliária Beiramar!',
+			from: '+12729992601',
+			to: '+55'+personPhone
+		})
+		.then(message => console.log(message.sid))
+		.done();
+
+	},
 
 	pushAuvo: function () {
 		
 		//Nenhum npm é necessário para rodar esse fluxo
 
-		var appKey = "0ANrY1kgphIThAA04S4FiEajGw3ub";
-		var token = "0ANrY1kgB33FfWZ3URadMJTgcfv";
+		var appKey = "4poDGohC1kg6jF5wC8f9RKElmcwxsr49";
+		var token = "o8EDGohC1kjNAzoeTN7dSKVUvbSRRmeE";
 		var startDate = "2018-10-31T08:00:00";
 		var endDate = "2019-10-30T18:00:00";
 
@@ -117,14 +157,14 @@ module.exports = {
 
 			var difference = retdate - mydate; // difference in milliseconds
 
-			const TOTAL_MILLISECONDS_IN_A_DAY = 1000 * 60 * 24 * 1.5;
+			const TOTAL_MILLISECONDS_IN_A_DAY = 1000 * 60 * 24 * 1;
 
-			if (Math.floor(difference / TOTAL_MILLISECONDS_IN_A_DAY) >= 1.5) {
-				console.log("Ainda falta mais que 36h para a visita na verificação da função.");
+			if (Math.floor(difference / TOTAL_MILLISECONDS_IN_A_DAY) >= 1) {
+				console.log("Ainda falta mais que 24h para a visita na verificação da função.");
 				var check = false;
 				return check;
 			}else {
-				console.log('Ainda falta menos que 36h para a visita na verificação da função.');
+				console.log('Ainda falta menos que 24h para a visita na verificação da função.');
 				var check = true;
 				return check;
 			}

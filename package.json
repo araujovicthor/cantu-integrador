@@ -1,33 +1,29 @@
 {
-  "name": "api-civ-quotation",
+  "name": "cantu-integrador",
   "version": "1.0.0",
-  "description": "real time quotation",
-  "main": "node server.js",
+  "description": "-----------------------------------------------------\r API de Cotação Real Time da CIV\r -----------------------------------------------------",
+  "main": "server.js",
+  "dependencies": {
+    "@sendgrid/mail": "^6.3.1",
+    "axios": "^0.18.0",
+    "cron": "^1.5.0",
+    "date-holidays": "^1.2.0",
+    "twilio": "^3.23.2",
+    "which-country": "^1.0.0"
+  },
+  "devDependencies": {},
   "scripts": {
-    "dev": "nodemon"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/araujovicthor/cantu-integrador.git"
   },
-  "dependencies": {
-    "axios": "^0.18.0",
-    "body-parser": "latest",
-    "cron": "^1.5.0",
-    "date-holidays": "^1.2.0",
-    "express": "latest",
-    "mongoose": "latest",
-    "pipedrive": "^6.0.2",
-    "request": "latest",
-    "which-country": "^1.0.0"
-  },
-  "author": "Victhor Araujo",
-  "license": "MIT",
+  "author": "",
+  "license": "ISC",
   "bugs": {
-    "url": ""
+    "url": "https://github.com/araujovicthor/cantu-integrador/issues"
   },
-  "homepage": "",
-  "devDependencies": {
-    "nodemon": "^1.12.1"
-  }
+  "homepage": "https://github.com/araujovicthor/cantu-integrador#readme"
 }
