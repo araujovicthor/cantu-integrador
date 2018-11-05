@@ -1,8 +1,10 @@
 var Tasks = require('./app/models/tasks');
 var Person = require('./app/models/person');
 var https = require("https");
-var Pipedrive = require("pipedrive");
 const axios = require("axios");
+var async = require('async');
+var Pipedrive = require("pipedrive");
+var pipedrive = new Pipedrive.Client('204369674ebaff427f06a5ab1e4e0bef2fe10c1a', { strictMode: true });
 
 
 module.exports = {
@@ -149,9 +151,7 @@ module.exports = {
 		tasks.checkList = data.checkList;
 		tasks.reminder = false;
 					
-		tasks.save();
-
-		console.log(data.taskID);
+		//console.log(data.taskID);
 		var person = new Person();
 		var sep1 = data.orientation.split("Nome do cliente: ").pop();
 		var personName = sep1.split("; Email do cliente: ").shift();
@@ -171,35 +171,31 @@ module.exports = {
 		person.taskID = data.taskID
  		person.save();
  		
-		//Cria user no Pipedrive
-		var pipedrive = new Pipedrive.Client('204369674ebaff427f06a5ab1e4e0bef2fe10c1a', { strictMode: true });
-		//var personID = 999;
-		//console.log(personID);
-		pipedrive.Persons.add ({name: personName, email: personEmail, phone: personPhone}, function(err, personPipedrive) {
-			if (err) throw err;
-			console.log(personPipedrive.id);
-		}).then(
-		pipedrive.Deals.add ({title: personName, person_id: personPipedrive.id, taskID: data.taskID}, function(err, dealsPipedrive) {
-			if (err) throw err;
-			console.log(dealsPipedrive.id);
-		}))
-		//console.log(personID);
+		async.waterfall([
+			function(callback){
+				pipedrive.Persons.add ({name: personName, email: personEmail, phone: personPhone}, function(err, personPipedrive){
+				console.log(personPipedrive);
+				callback(null, personPipedrive);
+				});
+			},
+			function (personPipedrive, callback){
+				console.log(personPipedrive.id);
+				pipedrive.Deals.add ({title: personName, person_id: personPipedrive.id}, function(err, dealsPipedrive){
+				console.log(dealsPipedrive);
+				tasks.dealID = dealsPipedrive.id;
+				console.log(tasks.dealID);
+				console.log(dealsPipedrive.id);
+				console.log('Salvando tarefa');
+				tasks.save();
+				callback(null);
+				});   
+			}
 		
-		//var tokenPipedrive = "204369674ebaff427f06a5ab1e4e0bef2fe10c1a";
-		//var urlPipe = "https://api.pipedrive.com/v1/persons?api_token="+ tokenPipedrive;
-		// axios({
-		// 	method: 'post',
-		// 	url: 'https://api.pipedrive.com/v1/persons?api_token=204369674ebaff427f06a5ab1e4e0bef2fe10c1a',
-		// 	headers: {
-		// 		Accept: 'application/json'
-		// 	},
-		// 	body: {
-		// 		name: 'personName',
-		// 		email: 'personEmail',
-		// 		phone: 'personPhone'
-		// 	}
-		// });
+		],function(err){
+			console.log('done')
+		});
 
+		
 	},
 
 	reminderFromAuvo: function (data) {
