@@ -45,7 +45,8 @@ var TasksSchema = new Schema({
     signatureBase64: String,
     attachmentsBase64: Array,
     checkList: Array,
-    dealID: Number
+    dealID: Number,
+    value: Number
 });
 
 module.exports = mongoose.model('Tasks', TasksSchema);

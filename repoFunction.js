@@ -5,7 +5,7 @@ const axios = require("axios");
 var async = require('async');
 var Pipedrive = require("pipedrive");
 var pipedrive = new Pipedrive.Client('204369674ebaff427f06a5ab1e4e0bef2fe10c1a', { strictMode: true });
-
+var request = require("request");
 
 module.exports = {
 
@@ -165,12 +165,35 @@ module.exports = {
 		var sep1 = data.orientation.split("Link do imóvel: ").pop();
 		var imovelURL = sep1.split("; Status da visita").shift();
 		person.imovelURL = imovelURL;
+		var sep1 = data.orientation.split("/imovel/").pop();
+		var codImovel = sep1.split("-").shift();
+		person.codImovel = codImovel;
 		var sep1 = data.orientation.split("Status da visita: ").pop();
 		var taskStatus = sep1.split(";").shift();
 		person.taskStatus = taskStatus;
 		person.taskID = data.taskID
- 		person.save();
- 		
+		person.save();
+		//console.log(codImovel);
+		//console.log(data.orientation);
+		 
+		var options = { method: 'POST',
+			url: 'https://beiramarimoveis.com.br/api/imovel/codigo.php',
+			headers: 
+			{ 'Postman-Token': '6df1ffc0-8b5a-44bf-8215-d16180630015',
+				'cache-control': 'no-cache',
+				Authorization: '5e6318870c7f3ded5e9e5922fc90e275',
+				'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' },
+		   	formData: { codigo: codImovel } };
+		 
+		request(options, function (error, response, dataBM) {
+			if (error) throw new Error(error);
+			dataBM = JSON.parse(dataBM);
+			//console.log(dataBM[0].id);
+			//console.log(dataBM[0].valor);   
+			//console.log(dataBM);
+			tasks.value = dataBM[0].valor;
+		});
+
 		async.waterfall([
 			function(callback){
 				pipedrive.Persons.add ({name: personName, email: personEmail, phone: personPhone}, function(err, personPipedrive){
@@ -179,7 +202,7 @@ module.exports = {
 				});
 			},
 			function (personPipedrive, callback){
-				pipedrive.Deals.add ({title: personName, person_id: personPipedrive.id}, function(err, dealsPipedrive){
+				pipedrive.Deals.add ({title: personName, person_id: personPipedrive.id, value: tasks.value}, function(err, dealsPipedrive){
 				tasks.dealID = dealsPipedrive.id;
 				console.log('Salvando tarefa');
 				tasks.save();
@@ -187,10 +210,10 @@ module.exports = {
 				});   
 			},
 			function (dealsPipedrive, callback){
-				console.log(person.imovelURL);
-				console.log(dealsPipedrive.id);
+				//console.log(person.imovelURL);
+				//console.log(dealsPipedrive.id);
 				pipedrive.Notes.add ({content: 'Agendou visita para o imóvel: ' + person.imovelURL, deal_id: dealsPipedrive.id}, function(err, notesPipedrive){
-				console.log(notesPipedrive);
+				//console.log(notesPipedrive);
 				console.log('Salvando nota');
 				callback(null);
 				});   
