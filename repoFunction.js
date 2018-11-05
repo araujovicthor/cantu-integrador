@@ -122,7 +122,7 @@ module.exports = {
 	},
 
 	
-	newFromAuvo: function (data) {
+	newFromAuvo: async function (data) {
 		var tasks = new Tasks();
 		tasks.taskID = data.taskID;
 		tasks.idUserFrom = data.idUserFrom;
@@ -174,19 +174,24 @@ module.exports = {
 		async.waterfall([
 			function(callback){
 				pipedrive.Persons.add ({name: personName, email: personEmail, phone: personPhone}, function(err, personPipedrive){
-				console.log(personPipedrive);
+				//console.log(personPipedrive);
 				callback(null, personPipedrive);
 				});
 			},
 			function (personPipedrive, callback){
-				console.log(personPipedrive.id);
 				pipedrive.Deals.add ({title: personName, person_id: personPipedrive.id}, function(err, dealsPipedrive){
-				console.log(dealsPipedrive);
 				tasks.dealID = dealsPipedrive.id;
-				console.log(tasks.dealID);
-				console.log(dealsPipedrive.id);
 				console.log('Salvando tarefa');
 				tasks.save();
+				callback(null, dealsPipedrive);
+				});   
+			},
+			function (dealsPipedrive, callback){
+				console.log(person.imovelURL);
+				console.log(dealsPipedrive.id);
+				pipedrive.Notes.add ({content: 'Agendou visita para o imóvel: ' + person.imovelURL, deal_id: dealsPipedrive.id}, function(err, notesPipedrive){
+				console.log(notesPipedrive);
+				console.log('Salvando nota');
 				callback(null);
 				});   
 			}

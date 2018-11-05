@@ -136,7 +136,7 @@ const job = new CronJob('*/5 * * * * *', function() {
 				}
 			} else { 
 				console.log('Gravando nova taskID no banco');
-				repoFunction.newFromAuvo(data[i]);
+				await repoFunction.newFromAuvo(data[i]);
 			}
 		}
 	  } catch (error) {
