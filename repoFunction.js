@@ -298,7 +298,6 @@ module.exports = {
 				});   
 			}
 		
-		},
 		],function(err){
 			console.log('done')
 		});
