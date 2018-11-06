@@ -202,7 +202,7 @@ module.exports = {
 				});
 			},
 			function (personPipedrive, callback){
-				pipedrive.Deals.add ({title: personName, person_id: personPipedrive.id, value: tasks.value}, function(err, dealsPipedrive){
+				pipedrive.Deals.add ({title: tasks.taskID, person_id: personPipedrive.id, value: tasks.value}, function(err, dealsPipedrive){
 				tasks.dealID = dealsPipedrive.id;
 				console.log('Salvando tarefa');
 				tasks.save();
