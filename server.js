@@ -103,6 +103,7 @@ const job = new CronJob('*/5 * * * * *', function() {
 						console.log('Vou enviar avaliação!');
 						console.log('Enviando avaliação...');
 						repoFunction.sendSMSTwilio_Reminder(data[i].personPhone,data[i].taskID, callback);
+						repoFunction.sendEmailSendGridEvaluation(data[i].personEmail,data[i].taskID, callback);
 						console.log('Finalizando tarefa...');
 						// repoFunction.editAuvo(data[i].finished); -> só lembrete de atualizar o auvo
 					}
@@ -121,13 +122,14 @@ const job = new CronJob('*/5 * * * * *', function() {
 							console.log(checkReminder);
 								if (checkReminder == true) {
 								console.log('O lembrete já foi enviado!');
-								console.log('Aguardando vistoria...');
+								console.log('Aguardando a visita...');
 							} else { 
 								console.log('Vou enviar o lembrete!');
 								console.log('Enviando lembrete...');
 								repoFunction.sendSMSTwilio_Reminder(data[i].personPhone, data[i].address,data[i].taskDate, callback);
+								repoFunction.sendEmailSendGridReminder(data[i].personEmail, data[i].address,data[i].taskDate, callback);
 								console.log('Gravando no banco que o lembrete foi enviado...');
-								//repoFunction.reminderFromAuvo(data[i]);
+								repoFunction.reminderFromAuvo(data[i]);
 							}
 
 						} else { 

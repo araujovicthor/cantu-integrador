@@ -47,6 +47,36 @@ module.exports = {
 
 	},
 
+	sendEmailSendGridReminder: function (personEmail, address,taskDate, callback) {
+		const sgMail = require('@sendgrid/mail');
+		SENDGRID_API_KEY="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";
+		sgMail.setApiKey(SENDGRID_API_KEY);
+		const msg = {
+		to: personEmail,
+		from: 'lembrete@cantu.com.br',
+		subject: 'Lembrete de visita ao imóvel - Beiramar',
+		text: 'Lembrete da sua visita ao imóvel no endereço'+ adress + 'na data e horario' + taskDate,
+		html: '<strong>Até lá!</strong>',
+		};
+		sgMail.send(msg);
+
+		},
+
+	sendEmailSendGridEvaluation: function (personPhone, taskID, callback) {
+		const sgMail = require('@sendgrid/mail');
+		SENDGRID_API_KEY="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";
+		sgMail.setApiKey(SENDGRID_API_KEY);
+		const msg = {
+		to: personEmail,
+		from: 'lembrete@cantu.com.br',
+		subject: 'Lembrete de visita ao imóvel - Beiramar',
+		text: 'Faça uma proposta e avalie o imóvel clicando no link: ' + 'https://docs.google.com/forms/d/e/1FAIpQLSetHqCn5Oe3kStTZJ3qFT_9lbS-Dvlf4zAXGG-KEQxcuyDhkw/viewform?usp=pp_url&entry.725776407='+taskID + 'Atenciosamente, Imobiliária Beiramar!',
+		html: '<strong>Até lá!</strong>',
+		};
+		sgMail.send(msg);
+		
+	},
+
 	pushAuvo: function () {
 		
 		//Nenhum npm é necessário para rodar esse fluxo
@@ -158,7 +188,7 @@ module.exports = {
 			var difference = retdate - mydate; // difference in milliseconds
 
 			const TOTAL_MILLISECONDS_IN_A_DAY = 1000 * 60 * 24 * 1;
-
+			console.log(TOTAL_MILLISECONDS_IN_A_DAY);
 			if (Math.floor(difference / TOTAL_MILLISECONDS_IN_A_DAY) >= 1) {
 				console.log("Ainda falta mais que 24h para a visita na verificação da função.");
 				var check = false;
@@ -233,28 +263,12 @@ module.exports = {
 		pipedrive.Persons.add ({name: personName, email: personEmail, phone: personPhone}, personID);
 		console.log(personID);
 		
-		//var tokenPipedrive = "204369674ebaff427f06a5ab1e4e0bef2fe10c1a";
-		//var urlPipe = "https://api.pipedrive.com/v1/persons?api_token="+ tokenPipedrive;
-		// axios({
-		// 	method: 'post',
-		// 	url: 'https://api.pipedrive.com/v1/persons?api_token=204369674ebaff427f06a5ab1e4e0bef2fe10c1a',
-		// 	headers: {
-		// 		Accept: 'application/json'
-		// 	},
-		// 	body: {
-		// 		name: 'personName',
-		// 		email: 'personEmail',
-		// 		phone: 'personPhone'
-		// 	}
-		// });
-
-	},
+		},
 
 	reminderFromAuvo: function (data) {
 		var tasks = new Tasks();
 		tasks.reminder = true;
-					
-		
+			
 		tasks.save();
 
 	},
