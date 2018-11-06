@@ -161,9 +161,6 @@ const job = new CronJob('*/5 * * * * *', function() {
 console.log('After job instantiation');
 job.start();
 
-
-
-
 //Definindo um padrão das rotas prefixadas: '/api':
 app.use('/api', router);
 
