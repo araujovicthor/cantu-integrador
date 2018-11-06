@@ -44,7 +44,12 @@ var TasksSchema = new Schema({
     checkinManual: Boolean,
     signatureBase64: String,
     attachmentsBase64: Array,
-    checkList: Array
+    checkList: Array,
+    dealID: Number,
+    imovelURL: String,
+    codImovel: String,
+    taskStatus: String,
+    value: Number
 });
 
 module.exports = mongoose.model('Tasks', TasksSchema);

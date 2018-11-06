@@ -50,17 +50,17 @@ router.use(function(req, res, next) {
 });
 
 //Rota de Teste para sabermos se tudo está realmente funcionando (acessar através: GET: http://localhost:8000/api): 
-router.get('/', function(req, res) {
-	res.json({ message: 'Beleza! Bem vindo(a) a nossa Loja XYZ' })
-});
+//router.get('/', function(req, res) {
+//	res.json({ message: 'Beleza! Bem vindo(a) a nossa Loja XYZ' })
+//});
 
 //API's:
 //==============================================================================
 
 var appKey = "4poDGohC1kg6jF5wC8f9RKElmcwxsr49";
 var token = "o8EDGohC1kjNAzoeTN7dSKVUvbSRRmeE";
-var startDate = "2018-11-20T00:00:01";
-var endDate = "2018-11-20T23:59:59";
+var startDate = "2018-11-21T00:00:01";
+var endDate = "2018-11-21T23:59:59";
 
 const CronJob = require('cron').CronJob;
 console.log('Cron for every minute');
@@ -139,7 +139,7 @@ const job = new CronJob('*/5 * * * * *', function() {
 				}
 			} else { 
 				console.log('Gravando nova taskID no banco');
-				repoFunction.newFromAuvo(data[i]);
+				await repoFunction.newFromAuvo(data[i]);
 			}
 		}
 	  } catch (error) {
@@ -147,6 +147,9 @@ const job = new CronJob('*/5 * * * * *', function() {
 	  }
 	};
 	getAUVO(url);
+
+	var statusNow = "Agendada";
+	var atualiza = repoFunction.statusCheck(statusNow);
 	
 
 })
