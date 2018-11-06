@@ -46,6 +46,9 @@ var TasksSchema = new Schema({
     attachmentsBase64: Array,
     checkList: Array,
     dealID: Number,
+    imovelURL: String,
+    codImovel: String,
+    taskStatus: String,
     value: Number
 });
 

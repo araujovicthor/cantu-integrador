@@ -13,9 +13,6 @@ var PersonSchema = new Schema({
     personName: String,
     personPhone: String,
     personEmail: String,
-    imovelURL: String,
-    codImovel: String,
-    taskStatus: String,
     taskID: Number
 });
 

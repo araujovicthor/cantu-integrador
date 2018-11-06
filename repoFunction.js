@@ -164,13 +164,13 @@ module.exports = {
 		person.personPhone = personPhone;
 		var sep1 = data.orientation.split("Link do imóvel: ").pop();
 		var imovelURL = sep1.split("; Status da visita").shift();
-		person.imovelURL = imovelURL;
+		tasks.imovelURL = imovelURL;
 		var sep1 = data.orientation.split("/imovel/").pop();
 		var codImovel = sep1.split("-").shift();
-		person.codImovel = codImovel;
+		tasks.codImovel = codImovel;
 		var sep1 = data.orientation.split("Status da visita: ").pop();
 		var taskStatus = sep1.split(";").shift();
-		person.taskStatus = taskStatus;
+		tasks.taskStatus = taskStatus;
 		person.taskID = data.taskID
 		person.save();
 		//console.log(codImovel);
@@ -212,7 +212,7 @@ module.exports = {
 			function (dealsPipedrive, callback){
 				//console.log(person.imovelURL);
 				//console.log(dealsPipedrive.id);
-				pipedrive.Notes.add ({content: 'Agendou visita para o imóvel: ' + person.imovelURL, deal_id: dealsPipedrive.id}, function(err, notesPipedrive){
+				pipedrive.Notes.add ({content: 'Agendou visita para o imóvel: ' + tasks.imovelURL, deal_id: dealsPipedrive.id}, function(err, notesPipedrive){
 				//console.log(notesPipedrive);
 				console.log('Salvando nota');
 				callback(null);
@@ -234,5 +234,73 @@ module.exports = {
 		tasks.save();
 
 	},
+
+	statusCheck: async function(status_Now, callback) {
+		return Tasks.find({taskStatus:status_Now},function(err, tasks){
+			if(err){            
+			console.log(err);
+			}
+		}).then(function(tasks) {
+			for (var i = 0; i < tasks.length; i++) {
+				//console.log(tasks[i].dealID);
+
+				async.waterfall([
+					function(callback){
+						pipedrive.Deals.get(tasks[i].dealID, function(err, dealPipedrive){
+							//console.log(dealPipedrive);
+							callback(null, dealPipedrive);
+						});
+					},
+					function(dealPipedrive, callback){
+						if(dealPipedrive.pipeline_id == 1 && dealPipedrive.stage_id == 2){
+							//console.log("dentro do fluxo");
+							
+							//console.log(tasks[i].orientation);
+							var sep1 = tasks[i].orientation.split("Nome do cliente: ").pop();
+							var orientationBase = sep1.split("Agendada;").shift();
+							//console.log(orientationBase);
+
+							Tasks.update({dealID: tasks[i].dealID}, {
+								taskStatus: "Confirmada",
+								orientation: "Nome do cliente: "+ orientationBase + "Confirmada;"
+							}, function(err, numberAffected, rawResponse) {
+							   //handle it
+							})
+
+							var options = { method: 'PUT',
+							url: 'https://app.auvo.com.br/api/v1.0/tasks/'+tasks[i].taskID,
+							headers: 
+								{	 
+								'Content-Type': 'application/json' 
+								},
+							body: 
+								{ 
+								appKey: '4poDGohC1kg6jF5wC8f9RKElmcwxsr49',
+								token: 'o8EDGohC1kjNAzoeTN7dSKVUvbSRRmeE',
+								orientation: "Nome do cliente: "+ orientationBase + "Confirmada;"
+								},
+								json: true };
+
+								request(options, function (error, response, body) {
+									if (error) throw new Error(error);
+									//console.log(body);
+							 	});
+
+						} else {
+							console.log('nothing to do');
+						}
+					callback(null);
+					}
+				],function(err){
+					console.log('Tarefa no Auvo Atualizada')
+				});
+
+				//console.log('chegou aqui');
+				var check = false;
+				return check;
+			}			
+		})
+		
+	}
 
 };

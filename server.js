@@ -144,6 +144,9 @@ const job = new CronJob('*/5 * * * * *', function() {
 	  }
 	};
 	getAUVO(url);
+
+	var statusNow = "Agendada";
+	var atualiza = repoFunction.statusCheck(statusNow);
 	
 
 })
