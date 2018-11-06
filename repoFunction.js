@@ -4,14 +4,12 @@ var https = require("https");
 var Pipedrive = require("pipedrive");
 const axios = require("axios");
 var twilio = require('twilio');
+const sgMail = require('@sendgrid/mail');
 
 
 module.exports = {
 	sendSMSTwilio_Reminder: function (personPhone, address,taskDate, callback) {
 		
-		var twilio = require('twilio');
-        // Download the helper library from https://www.twilio.com/docs/node/install
-		// Your Account Sid and Auth Token from twilio.com/console
 		const accountSid = 'ACe77c5f758168c9a356897d57b7b84001';
 		const authToken = '4d7f1ffd299f2d28ae711be88c0c5e6f';
 		const client = require('twilio')(accountSid, authToken);
@@ -29,9 +27,6 @@ module.exports = {
 
 	sendSMSTwilio_Evaluation: function (personPhone, taskID, callback) {
 		
-		var twilio = require('twilio');
-        // Download the helper library from https://www.twilio.com/docs/node/install
-		// Your Account Sid and Auth Token from twilio.com/console
 		const accountSid = 'ACe77c5f758168c9a356897d57b7b84001';
 		const authToken = '4d7f1ffd299f2d28ae711be88c0c5e6f';
 		const client = require('twilio')(accountSid, authToken);
@@ -48,7 +43,6 @@ module.exports = {
 	},
 
 	sendEmailSendGridReminder: function (personEmail, address,taskDate, callback) {
-		const sgMail = require('@sendgrid/mail');
 		SENDGRID_API_KEY="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";
 		sgMail.setApiKey(SENDGRID_API_KEY);
 		const msg = {
@@ -63,7 +57,6 @@ module.exports = {
 		},
 
 	sendEmailSendGridEvaluation: function (personPhone, taskID, callback) {
-		const sgMail = require('@sendgrid/mail');
 		SENDGRID_API_KEY="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";
 		sgMail.setApiKey(SENDGRID_API_KEY);
 		const msg = {
