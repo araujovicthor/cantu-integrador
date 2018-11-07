@@ -207,7 +207,7 @@ module.exports = {
 					});
 				},
 				function (personPipedrive, callback){
-					pipedrive.Deals.add ({title: tasks.taskID, person_id: personPipedrive.id, value: tasks.value, stage_id: 1}, function(err, dealsPipedrive){
+					pipedrive.Deals.add ({title: tasks.taskID, person_id: personPipedrive.id, value: tasks.value, stage_id: 1, '977276d6dab083489d6b8eea14ab2d7b5a2f71d7': tasks.taskDate, 'e7a5b03d9ea943031b93ef00658cb0bcdd3bc296': tasks.address}, function(err, dealsPipedrive){
 					tasks.dealID = dealsPipedrive.id;
 					console.log('Salvando tarefa');
 					tasks.save();
@@ -228,16 +228,84 @@ module.exports = {
 		
 	},
 
-	reminderFromAuvo: function (data) {
-		var tasks = new Tasks();
-		tasks.reminder = true;
+	// reminderFromAuvo: function (data) {
+	// 	var tasks = new Tasks();
+	// 	tasks.reminder = true;
 					
 		
-		tasks.save();
+	// 	tasks.save();
 
-	},
+	// },
 
 	statusCheck: async function(status_Now, callback) {
+		return Tasks.find({taskStatus:status_Now},function(err, tasks){
+			if(err){            
+			console.log(err);
+			}
+		}).then(function(tasks) {
+			for (var i = 0; i < tasks.length; i++) {
+				//console.log(tasks[i].dealID);
+
+				async.waterfall([
+					function(callback){
+						pipedrive.Deals.get(tasks[i].dealID, function(err, dealPipedrive){
+							//console.log(dealPipedrive);
+							callback(null, dealPipedrive);
+						});
+					},
+					function(dealPipedrive, callback){
+						if(dealPipedrive.pipeline_id == 1 && dealPipedrive.stage_id == 2){
+							//console.log("dentro do fluxo");
+							
+							//console.log(tasks[i].orientation);
+							var sep1 = tasks[i].orientation.split("Nome do cliente: ").pop();
+							var orientationBase = sep1.split("Agendada;").shift();
+							//console.log(orientationBase);
+
+							Tasks.update({dealID: tasks[i].dealID}, {
+								taskStatus: "Confirmada",
+								orientation: "Nome do cliente: "+ orientationBase + "Confirmada;"
+							}, function(err, numberAffected, rawResponse) {
+							   //handle it
+							})
+
+							var options = { method: 'PUT',
+							url: 'https://app.auvo.com.br/api/v1.0/tasks/'+tasks[i].taskID,
+							headers: 
+								{	 
+								'Content-Type': 'application/json' 
+								},
+							body: 
+								{ 
+								appKey: '4poDGohC1kg6jF5wC8f9RKElmcwxsr49',
+								token: 'o8EDGohC1kjNAzoeTN7dSKVUvbSRRmeE',
+								orientation: "Nome do cliente: "+ orientationBase + "Confirmada;"
+								},
+								json: true };
+
+								request(options, function (error, response, body) {
+									if (error) throw new Error(error);
+									//console.log(body);
+							 	});
+
+						} else {
+							console.log('nothing to do');
+						}
+					callback(null);
+					}
+				],function(err){
+					console.log('Tarefa no Auvo Atualizada')
+				});
+
+				//console.log('chegou aqui');
+				var check = false;
+				return check;
+			}			
+		})
+		
+	},
+
+	confirmaVisita: async function(status_Now, time_Now, callback) {
 		return Tasks.find({taskStatus:status_Now},function(err, tasks){
 			if(err){            
 			console.log(err);

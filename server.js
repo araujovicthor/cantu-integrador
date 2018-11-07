@@ -153,6 +153,8 @@ const job = new CronJob('*/5 * * * * *', function() {
 	var statusNow = "Agendada";
 	repoFunction.statusCheck(statusNow);
 	
+	//var timeNow = startDate;
+	//repoFunction.confirmaVisita(statusNow, timeNow);
 
 })
 
