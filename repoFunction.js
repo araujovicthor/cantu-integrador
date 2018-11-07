@@ -9,24 +9,6 @@ var request = require("request");
 
 module.exports = {
 
-	pushAuvo: function () {
-		
-		//Nenhum npm é necessário para rodar esse fluxo
-
-		var appKey = "0ANrY1kgphIThAA04S4FiEajGw3ub";
-		var token = "0ANrY1kgB33FfWZ3URadMJTgcfv";
-		var startDate = "2018-10-31T08:00:00";
-		var endDate = "2019-10-30T18:00:00";
-
-		var url =
-		"https://app.auvo.com.br/api/v1.0/tasks?appKey="+ appKey +"&token="+ token +
-		"&startDate="+ startDate +"&endDate="+ endDate;
-			
-		console.log(url);
-
-		return url;
-	},
-
 	checkIDFromAuvo: async function(taskID_Now, callback) {
 		return Tasks.find({taskID:taskID_Now},function(err, tasks){
 			if(err){            
@@ -47,56 +29,48 @@ module.exports = {
 		
 	},
 
-	checkOutFromAuvo: async function(checkOut_Now, callback) {
-		return Tasks.find({checkOut:true},function(err, tasks){
-			if(err){            
-			console.log(err);
-			}
-		}).then(function(tasks) {
-			if (tasks.length === 0) {
-				console.log('CheckOut não realizado na verificação da função.');
-				var check = false;
-				return check;
-			} else {
-				console.log('CheckOut realizado na verificação da função.');
-				var check = true;
-				return check;
-			}
-		})
-		
-	},
+	checkOutFromAuvo: async function(auvoID, pipedriveID) {
+		pipedrive.Deals.update (pipedriveID, {stage_id: 26}, function(err, dealsPipedrive){
+		});
 
-	checkFinishedFromAuvo: async function(finished_Now, callback) {
-		return Tasks.find({finished:true},function(err, tasks){
-			if(err){            
-			console.log(err);
-			}
-		}).then(function(tasks) {
-			if (tasks.length === 0) {
-				console.log('Não finalizado na verificação da função.');
-				var check = false;
-				return check;
-			} else {
-				console.log('Finalizado na verificação da função.');
-				var check = true;
-				return check;
-			}
-			//console.log(check);
-		})
-		
+		Tasks.findOne({taskID: auvoID}, function (err, tasks) {
+			if (err) return console.log(err);
+			tasks.taskStatus = "Visita Realizada";
+			tasks.save();
+		});
+
+		var options = { method: 'PUT',
+			url: 'https://app.auvo.com.br/api/v1.0/tasks/'+ auvoID,
+			headers: 
+			{	 
+				'Content-Type': 'application/json' 
+			},
+			body: 
+			{ 
+				appKey: '4poDGohC1kg6jF5wC8f9RKElmcwxsr49',
+				token: 'o8EDGohC1kjNAzoeTN7dSKVUvbSRRmeE',
+				closeTask: true
+			},
+			json: true 
+		};
+
+		request(options, function (error, response, body) {
+			if (error) throw new Error(error);
+			//console.log(body);
+		});
 	},
 
 	checkConfirmation: async function(auvoID, pipedriveID, mydatestring) {
 		var retdate = new Date();
-		retdate.setDate(retdate.getDate()-1);
+		retdate.setDate(retdate.getDate());
 		var mydate = new Date(mydatestring);
 
 		var difference = mydate - retdate; // difference in milliseconds ok
 
-		const TOTAL_MILLISECONDS_IN_A_DAY = 1000 * 60 * 24 * 1;
+		const TOTAL_MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
 		//o sinal dentro do if deve ser >= para que a função esteja correta, está invertido só para teste
-		if (Math.floor(difference / TOTAL_MILLISECONDS_IN_A_DAY) >= 1) {
+		if (difference / TOTAL_MILLISECONDS_IN_A_DAY >= 1) {
 			console.log("Mais que 24h para a visita na verificação da função. Nada a fazer.");
 		} else {
 			console.log("Falta menos que 24h para a visita. Enviar Confirmação.");
@@ -112,15 +86,15 @@ module.exports = {
 
 	checkReminder: async function(auvoID, pipedriveID, mydatestring) {
 		var retdate = new Date();
-		retdate.setDate(retdate.getDate()-1);
+		retdate.setDate(retdate.getDate());
 		var mydate = new Date(mydatestring);
 
 		var difference = mydate - retdate; // difference in milliseconds
 
-		const TOTAL_MILLISECONDS_IN_A_DAY = 1000 * 60 * 24 * 1;
+		const TOTAL_MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
 		//o sinal dentro do if deve ser >= para que a função esteja correta, está invertido só para teste
-		if (Math.floor(difference / TOTAL_MILLISECONDS_IN_A_DAY) >= .125) {
+		if (difference / TOTAL_MILLISECONDS_IN_A_DAY >= .125) {
 			console.log("Mais que 3h para a visita na verificação da função. Nada a fazer.");
 		}else {
 			console.log("Falta menos que 3h para a visita. Enviar Lembrete.");
@@ -136,10 +110,10 @@ module.exports = {
 	
 	newFromAuvo: async function (data, update_new) {
 		
-		if(update_new==true){
+		if(update_new == true){
 			Tasks.findOne({taskID: data.taskID}, function (err, tasks) {
 				if (err) return console.log(err);
-			  
+							  
 				tasks.taskDate = data.taskDate;
 				tasks.finished = data.finished;
 				tasks.checkOut = data.checkOut;
@@ -284,12 +258,13 @@ module.exports = {
 								token: 'o8EDGohC1kjNAzoeTN7dSKVUvbSRRmeE',
 								orientation: "Nome do cliente: "+ orientationBase + "Confirmada;"
 								},
-								json: true };
+								json: true 
+							};
 
-								request(options, function (error, response, body) {
-									if (error) throw new Error(error);
-									//console.log(body);
-							 	});
+							request(options, function (error, response, body) {
+								if (error) throw new Error(error);
+								//console.log(body);
+							});
 
 						} else {
 							console.log('Não houve avanço no Pipedrive para atualizar no Auvo');

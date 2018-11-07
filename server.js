@@ -59,19 +59,19 @@ router.use(function(req, res, next) {
 
 var appKey = "4poDGohC1kg6jF5wC8f9RKElmcwxsr49";
 var token = "o8EDGohC1kjNAzoeTN7dSKVUvbSRRmeE";
-var startDate = "2018-11-21T00:00:01";
-var endDate = "2018-11-21T23:59:59";
-var lastUpdated = "2018-11-06T12:00:00";
+var startDate = "2018-11-07T00:00:01";
+var endDate = "2018-11-08T23:59:59";
+//var lastUpdated = "2018-11-06T12:00:00";
 
 const CronJob = require('cron').CronJob;
-console.log('Cron for every minute');
-console.log('Before job instantiation');
+//console.log('Cron for every minute');
+//console.log('Before job instantiation');
 const job = new CronJob('*/5 * * * * *', function() {
 	const d = new Date();
 	console.log('Every minute:', d);
 	var url =
 	"https://app.auvo.com.br/api/v1.0/tasks?appKey="+ appKey +"&token="+ token +
-	"&startDate="+ startDate +"&endDate="+ endDate + "&lastUpdated=" + lastUpdated;
+	"&startDate="+ startDate +"&endDate="+ endDate; //+ "&lastUpdated=" + lastUpdated;
 	//console.log(url);
 
 	const axios = require("axios");
@@ -82,67 +82,8 @@ const job = new CronJob('*/5 * * * * *', function() {
 		var data = response.data;
 		
 		for (var i = 0; i < data.length; i++) {
-			
 			var checkIdExistente = await repoFunction.checkIDFromAuvo(data[i].taskID);
-			//console.log(checkIdExistente);
-
-			//console.log('Gravando nova taskID no banco');
 			await repoFunction.newFromAuvo(data[i],checkIdExistente);
-
-			// if (checkIdExistente==true) {
-			// 	console.log('O taskID já tem cadastrado no banco de dados.');
-			// 	console.log('Checando se o checkOut foi realizado...');
-
-				// var checkOutRealizado = await repoFunction.checkOutFromAuvo(data[i].checkOut);
-				// console.log(checkOutRealizado);
-				// if (checkOutRealizado == true) {
-				// 	console.log('CheckOut realizado!');
-
-				// 	console.log('Checando se foi finalizado...');
-				// 	var checkFinalizado = await repoFunction.checkFinishedFromAuvo(data[i].finished);
-				// 	console.log(checkFinalizado);
-				// 	if (checkFinalizado == true) {
-				// 		console.log('A Tarefa já foi finalizada!');
-				// 		console.log('Não vou fazer nada!');
-				// 	} else { 
-				// 		console.log('A Tarefa não foi finalizada!');
-				// 		console.log('Vou enviar avaliação!');
-				// 		console.log('Enviando avaliação...');
-					
-				// 		console.log('Finalizando tarefa...');
-				// 		// repoFunction.editAuvo(data[i].finished); -> só lembrete de atualizar o auvo
-				// 	}
-
-				// } else { 
-				// 	console.log('CheckOut não realizado!');
-
-				// 	console.log('Checando se foi falta menos de 24hs...');
-				// 		var checkDate = await repoFunction.checkDateFromAuvo(data[i].taskDate);
-				// 		console.log(checkDate);
-				// 		if (checkDate == true) {
-				// 			console.log('Falta menos de 24hs!');
-							
-				// 			console.log('Checando se lembrete ja foi enviado...');
-				// 			var checkReminder = await repoFunction.checkReminderFromAuvo(data[i].reminder);
-				// 			console.log(checkReminder);
-				// 				if (checkReminder == true) {
-				// 				console.log('O lembrete já foi enviado!');
-				// 				console.log('Não vou fazer nada!');
-				// 			} else { 
-				// 				console.log('Vou enviar o lembrete!');
-				// 				console.log('Enviando lembrete...');
-				// 				console.log('Gravando no banco que o lembrete foi enviado...');
-				// 				//repoFunction.reminderFromAuvo(data[i]);
-				// 			}
-
-				// 		} else { 
-				// 			console.log('Não falta menos de 24hs!');
-				// 			console.log('Não vou fazer nada!');
-				// 		}
-				// }
-			// } else { 
-				
-			// }
 		}
 	  } catch (error) {
 		console.log(error);
@@ -156,7 +97,7 @@ const job = new CronJob('*/5 * * * * *', function() {
 	
 	//console.log('oi');
 
-	Tasks.find({ $or: [ { taskStatus: "Agendada" }, { taskStatus: "Confirmação Enviada" }, {taskStatus:"Confirmada"}] },function(err, tasks){
+	Tasks.find({ $or: [ { taskStatus: "Agendada" }, { taskStatus: "Confirmação Enviada" }, {taskStatus:"Confirmada"}, {taskStatus:"Lembrete Enviado"}] },function(err, tasks){
 		//console.log(tasks);
 		if(err){            
 		console.log(err);
@@ -166,9 +107,18 @@ const job = new CronJob('*/5 * * * * *', function() {
 			//console.log(tasks[i].taskDate);
 			if(tasks[i].taskStatus == "Agendada"){
 				repoFunction.checkConfirmation(tasks[i].taskID, tasks[i].dealID, tasks[i].taskDate);
+			} else if(tasks[i].taskStatus == "Lembrete Enviado"){
+				//a verificação abaixo tem que ser com true, alterado só pra teste
+				if(tasks[i].checkOut == true){
+					repoFunction.checkOutFromAuvo(tasks[i].taskID, tasks[i].dealID);
+					console.log('fez checkout');
+				} else	{
+					console.log('ainda não fez checkout');
+					//apenas para teste
+					//repoFunction.checkOutFromAuvo(tasks[i].taskID, tasks[i].dealID);
+				}				
 			} else {
 				repoFunction.checkReminder(tasks[i].taskID, tasks[i].dealID, tasks[i].taskDate);
-
 			}
 		}
 	})
@@ -176,13 +126,8 @@ const job = new CronJob('*/5 * * * * *', function() {
 })
 
 
-
-//	console.log(tasks);
-
-console.log('After job instantiation');
+//console.log('After job instantiation');
 job.start();
-
-
 
 
 //Definindo um padrão das rotas prefixadas: '/api':
