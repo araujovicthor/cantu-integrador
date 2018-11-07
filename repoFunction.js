@@ -106,19 +106,32 @@ module.exports = {
 		
 	},
 
-	checkDateFromAuvo: async function(date_Now, callback) {
-		return Tasks.find({taskDate:date_Now},function(err, tasks){
-			if(err){            
-			console.log(err);
-			}
-		}).then(function(tasks) {
-			
-				console.log('verificando data = false');
-				var check = false;
-				return check;
-			
-		})
-		
+	checkDateFromAuvo: async function(auvoID, pipedriveID, mydatestring) {
+		var retdate = new Date();
+		retdate.setDate(retdate.getDate()-1);
+		//var mydatestring = '2016-07-26T09:29:05.00';
+		var mydate = new Date(mydatestring);
+
+		var difference = mydate - retdate; // difference in milliseconds
+
+		const TOTAL_MILLISECONDS_IN_A_DAY = 1000 * 60 * 24 * 1;
+
+		//o sinal dentro do if deve ser >= para que a função esteja correta, está invertido só para teste
+		if (Math.floor(difference / TOTAL_MILLISECONDS_IN_A_DAY) <= 1) {
+			console.log("Mais que 24h para a visita na verificação da função.");
+		}else {
+			console.log('Ainda falta menos que 24h para a visita na verificação da função.');
+			pipedrive.Deals.update (pipedriveID, {stage_id: 24}, function(err, dealsPipedrive){
+				//callback(null);
+			});
+			Tasks.findOne({taskID: auvoID}, function (err, tasks) {
+				if (err) return console.log(err);
+			  
+				tasks.taskStatus = "Confirmação Enviada";
+				tasks.save();
+			});
+		}
+					
 	},
 
 	
@@ -289,12 +302,12 @@ module.exports = {
 							 	});
 
 						} else {
-							console.log('nothing to do');
+							console.log('Não houve avanço no Pipedrive para atualizar no Auvo');
 						}
 					callback(null);
 					}
 				],function(err){
-					console.log('Tarefa no Auvo Atualizada')
+					console.log('Não foi possível atualizar no Auvo')
 				});
 
 				//console.log('chegou aqui');

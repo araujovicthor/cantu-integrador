@@ -86,7 +86,7 @@ const job = new CronJob('*/5 * * * * *', function() {
 			var checkIdExistente = await repoFunction.checkIDFromAuvo(data[i].taskID);
 			//console.log(checkIdExistente);
 
-			console.log('Gravando nova taskID no banco');
+			//console.log('Gravando nova taskID no banco');
 			await repoFunction.newFromAuvo(data[i],checkIdExistente);
 
 			// if (checkIdExistente==true) {
@@ -153,6 +153,22 @@ const job = new CronJob('*/5 * * * * *', function() {
 	var statusNow = "Agendada";
 	repoFunction.statusCheck(statusNow);
 	
+	//console.log('oi');
+
+	Tasks.find({taskStatus:statusNow},function(err, tasks){
+		//console.log(tasks);
+		if(err){            
+		console.log(err);
+		}
+	}).then(function(tasks){
+		for (var i = 0; i < tasks.length; i++) {
+			//console.log(tasks[i].taskDate);
+			repoFunction.checkDateFromAuvo(tasks[i].taskID, tasks[i].dealID, tasks[i].taskDate);
+	}
+	})
+
+	//console.log('tchau');
+
 	//var timeNow = startDate;
 	//repoFunction.confirmaVisita(statusNow, timeNow);
 
