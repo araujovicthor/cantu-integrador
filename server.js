@@ -167,7 +167,7 @@ const job = new CronJob('*/5 * * * * *', function() {
 			if(tasks[i].taskStatus == "Agendada"){
 				repoFunction.checkConfirmation(tasks[i].taskID, tasks[i].dealID, tasks[i].taskDate);
 			} else {
-				console.log("não é agendada");
+				repoFunction.checkReminder(tasks[i].taskID, tasks[i].dealID, tasks[i].taskDate);
 			}
 		}
 	})
