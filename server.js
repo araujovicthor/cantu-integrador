@@ -93,7 +93,7 @@ const job = new CronJob('*/5 * * * * *', function() {
 
 	//var statusNow = "Agendada";
 	// Vê no Pipedrive se a visita foi confirmada e atualiza o Auvo
-	repoFunction.statusCheck("Agendada");
+	repoFunction.statusCheck("Confirmação Enviada");
 	
 	//console.log('oi');
 
