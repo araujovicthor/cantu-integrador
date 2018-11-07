@@ -91,7 +91,7 @@ module.exports = {
 		retdate.setDate(retdate.getDate()-1);
 		var mydate = new Date(mydatestring);
 
-		var difference = mydate - retdate; // difference in milliseconds
+		var difference = mydate - retdate; // difference in milliseconds ok
 
 		const TOTAL_MILLISECONDS_IN_A_DAY = 1000 * 60 * 24 * 1;
 
