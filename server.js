@@ -61,6 +61,7 @@ var appKey = "4poDGohC1kg6jF5wC8f9RKElmcwxsr49";
 var token = "o8EDGohC1kjNAzoeTN7dSKVUvbSRRmeE";
 var startDate = "2018-11-21T00:00:01";
 var endDate = "2018-11-21T23:59:59";
+var lastUpdated = "2018-11-06T12:00:00";
 
 const CronJob = require('cron').CronJob;
 console.log('Cron for every minute');
@@ -70,8 +71,9 @@ const job = new CronJob('*/5 * * * * *', function() {
 	console.log('Every minute:', d);
 	var url =
 	"https://app.auvo.com.br/api/v1.0/tasks?appKey="+ appKey +"&token="+ token +
-	"&startDate="+ startDate +"&endDate="+ endDate;
-	
+	"&startDate="+ startDate +"&endDate="+ endDate + "&lastUpdated=" + lastUpdated;
+	//console.log(url);
+
 	const axios = require("axios");
 	
 	const getAUVO = async url => {
@@ -82,62 +84,65 @@ const job = new CronJob('*/5 * * * * *', function() {
 		for (var i = 0; i < data.length; i++) {
 			
 			var checkIdExistente = await repoFunction.checkIDFromAuvo(data[i].taskID);
-			console.log(checkIdExistente);
-			if (checkIdExistente==true) {
-				console.log('O taskID já tem cadastrado no banco de dados.');
-				console.log('Checando se o checkOut foi realizado...');
+			//console.log(checkIdExistente);
 
-				var checkOutRealizado = await repoFunction.checkOutFromAuvo(data[i].checkOut);
-				console.log(checkOutRealizado);
-				if (checkOutRealizado == true) {
-					console.log('CheckOut realizado!');
+			console.log('Gravando nova taskID no banco');
+			await repoFunction.newFromAuvo(data[i],checkIdExistente);
 
-					console.log('Checando se foi finalizado...');
-					var checkFinalizado = await repoFunction.checkFinishedFromAuvo(data[i].finished);
-					console.log(checkFinalizado);
-					if (checkFinalizado == true) {
-						console.log('A Tarefa já foi finalizada!');
-						console.log('Não vou fazer nada!');
-					} else { 
-						console.log('A Tarefa não foi finalizada!');
-						console.log('Vou enviar avaliação!');
-						console.log('Enviando avaliação...');
+			// if (checkIdExistente==true) {
+			// 	console.log('O taskID já tem cadastrado no banco de dados.');
+			// 	console.log('Checando se o checkOut foi realizado...');
+
+				// var checkOutRealizado = await repoFunction.checkOutFromAuvo(data[i].checkOut);
+				// console.log(checkOutRealizado);
+				// if (checkOutRealizado == true) {
+				// 	console.log('CheckOut realizado!');
+
+				// 	console.log('Checando se foi finalizado...');
+				// 	var checkFinalizado = await repoFunction.checkFinishedFromAuvo(data[i].finished);
+				// 	console.log(checkFinalizado);
+				// 	if (checkFinalizado == true) {
+				// 		console.log('A Tarefa já foi finalizada!');
+				// 		console.log('Não vou fazer nada!');
+				// 	} else { 
+				// 		console.log('A Tarefa não foi finalizada!');
+				// 		console.log('Vou enviar avaliação!');
+				// 		console.log('Enviando avaliação...');
 					
-						console.log('Finalizando tarefa...');
-						// repoFunction.editAuvo(data[i].finished); -> só lembrete de atualizar o auvo
-					}
+				// 		console.log('Finalizando tarefa...');
+				// 		// repoFunction.editAuvo(data[i].finished); -> só lembrete de atualizar o auvo
+				// 	}
 
-				} else { 
-					console.log('CheckOut não realizado!');
+				// } else { 
+				// 	console.log('CheckOut não realizado!');
 
-					console.log('Checando se foi falta menos de 24hs...');
-						var checkDate = await repoFunction.checkDateFromAuvo(data[i].taskDate);
-						console.log(checkDate);
-						if (checkDate == true) {
-							console.log('Falta menos de 24hs!');
+				// 	console.log('Checando se foi falta menos de 24hs...');
+				// 		var checkDate = await repoFunction.checkDateFromAuvo(data[i].taskDate);
+				// 		console.log(checkDate);
+				// 		if (checkDate == true) {
+				// 			console.log('Falta menos de 24hs!');
 							
-							console.log('Checando se lembrete ja foi enviado...');
-							var checkReminder = await repoFunction.checkReminderFromAuvo(data[i].reminder);
-							console.log(checkReminder);
-								if (checkReminder == true) {
-								console.log('O lembrete já foi enviado!');
-								console.log('Não vou fazer nada!');
-							} else { 
-								console.log('Vou enviar o lembrete!');
-								console.log('Enviando lembrete...');
-								console.log('Gravando no banco que o lembrete foi enviado...');
-								//repoFunction.reminderFromAuvo(data[i]);
-							}
+				// 			console.log('Checando se lembrete ja foi enviado...');
+				// 			var checkReminder = await repoFunction.checkReminderFromAuvo(data[i].reminder);
+				// 			console.log(checkReminder);
+				// 				if (checkReminder == true) {
+				// 				console.log('O lembrete já foi enviado!');
+				// 				console.log('Não vou fazer nada!');
+				// 			} else { 
+				// 				console.log('Vou enviar o lembrete!');
+				// 				console.log('Enviando lembrete...');
+				// 				console.log('Gravando no banco que o lembrete foi enviado...');
+				// 				//repoFunction.reminderFromAuvo(data[i]);
+				// 			}
 
-						} else { 
-							console.log('Não falta menos de 24hs!');
-							console.log('Não vou fazer nada!');
-						}
-				}
-			} else { 
-				console.log('Gravando nova taskID no banco');
-				await repoFunction.newFromAuvo(data[i]);
-			}
+				// 		} else { 
+				// 			console.log('Não falta menos de 24hs!');
+				// 			console.log('Não vou fazer nada!');
+				// 		}
+				// }
+			// } else { 
+				
+			// }
 		}
 	  } catch (error) {
 		console.log(error);
