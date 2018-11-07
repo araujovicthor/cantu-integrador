@@ -150,12 +150,13 @@ const job = new CronJob('*/5 * * * * *', function() {
 	};
 	getAUVO(url);
 
-	var statusNow = "Agendada";
-	repoFunction.statusCheck(statusNow);
+	//var statusNow = "Agendada";
+	// Vê no Pipedrive se a visita foi confirmada e atualiza o Auvo
+	repoFunction.statusCheck("Agendada");
 	
 	//console.log('oi');
 
-	Tasks.find({taskStatus:statusNow},function(err, tasks){
+	Tasks.find({ $or: [ { taskStatus: "Agendada" }, { taskStatus: "Confirmação Enviada" }, {taskStatus:"Confirmada"}] },function(err, tasks){
 		//console.log(tasks);
 		if(err){            
 		console.log(err);
@@ -163,8 +164,12 @@ const job = new CronJob('*/5 * * * * *', function() {
 	}).then(function(tasks){
 		for (var i = 0; i < tasks.length; i++) {
 			//console.log(tasks[i].taskDate);
-			repoFunction.checkDateFromAuvo(tasks[i].taskID, tasks[i].dealID, tasks[i].taskDate);
-	}
+			if(tasks[i].taskStatus == "Agendada"){
+				repoFunction.checkConfirmation(tasks[i].taskID, tasks[i].dealID, tasks[i].taskDate);
+			} else {
+				console.log("não é agendada");
+			}
+		}
 	})
 
 	//console.log('tchau');
