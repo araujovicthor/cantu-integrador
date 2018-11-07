@@ -86,26 +86,6 @@ module.exports = {
 		
 	},
 
-	// checkReminderFromAuvo: async function(reminder_Now, callback) {
-	// 	return Tasks.find({reminder:true},function(err, tasks){
-	// 		if(err){            
-	// 		console.log(err);
-	// 		}
-	// 	}).then(function(tasks) {
-	// 		if (tasks.length === 0) {
-	// 			console.log('O lembrete ainda não foi enviado na verificação da função.');
-	// 			var check = false;
-	// 			return check;
-	// 		} else {
-	// 			console.log('O lembrete já foi enviado na verificação da função.');
-	// 			var check = true;
-	// 			return check;
-	// 		}
-	// 		//console.log(check);
-	// 	})
-		
-	// },
-
 	checkConfirmation: async function(auvoID, pipedriveID, mydatestring) {
 		var retdate = new Date();
 		retdate.setDate(retdate.getDate()-1);
@@ -116,7 +96,7 @@ module.exports = {
 		const TOTAL_MILLISECONDS_IN_A_DAY = 1000 * 60 * 24 * 1;
 
 		//o sinal dentro do if deve ser >= para que a função esteja correta, está invertido só para teste
-		if (Math.floor(difference / TOTAL_MILLISECONDS_IN_A_DAY) <= 1) {
+		if (Math.floor(difference / TOTAL_MILLISECONDS_IN_A_DAY) >= 1) {
 			console.log("Mais que 24h para a visita na verificação da função. Nada a fazer.");
 		} else {
 			console.log("Falta menos que 24h para a visita. Enviar Confirmação.");
@@ -140,7 +120,7 @@ module.exports = {
 		const TOTAL_MILLISECONDS_IN_A_DAY = 1000 * 60 * 24 * 1;
 
 		//o sinal dentro do if deve ser >= para que a função esteja correta, está invertido só para teste
-		if (Math.floor(difference / TOTAL_MILLISECONDS_IN_A_DAY) <= .125) {
+		if (Math.floor(difference / TOTAL_MILLISECONDS_IN_A_DAY) >= .125) {
 			console.log("Mais que 3h para a visita na verificação da função. Nada a fazer.");
 		}else {
 			console.log("Falta menos que 3h para a visita. Enviar Lembrete.");
@@ -260,15 +240,6 @@ module.exports = {
 		
 	},
 
-	// reminderFromAuvo: function (data) {
-	// 	var tasks = new Tasks();
-	// 	tasks.reminder = true;
-					
-		
-	// 	tasks.save();
-
-	// },
-
 	statusCheck: async function(status_Now, callback) {
 		return Tasks.find({taskStatus:status_Now},function(err, tasks){
 			if(err){            
@@ -336,73 +307,5 @@ module.exports = {
 		})
 		
 	}
-
-	// confirmaVisita: async function(status_Now, time_Now, callback) {
-	// 	return Tasks.find({taskStatus:status_Now},function(err, tasks){
-	// 		if(err){            
-	// 		console.log(err);
-	// 		}
-	// 	}).then(function(tasks) {
-	// 		for (var i = 0; i < tasks.length; i++) {
-	// 			//console.log(tasks[i].dealID);
-
-	// 			async.waterfall([
-	// 				function(callback){
-	// 					pipedrive.Deals.get(tasks[i].dealID, function(err, dealPipedrive){
-	// 						//console.log(dealPipedrive);
-	// 						callback(null, dealPipedrive);
-	// 					});
-	// 				},
-	// 				function(dealPipedrive, callback){
-	// 					if(dealPipedrive.pipeline_id == 1 && dealPipedrive.stage_id == 2){
-	// 						//console.log("dentro do fluxo");
-							
-	// 						//console.log(tasks[i].orientation);
-	// 						var sep1 = tasks[i].orientation.split("Nome do cliente: ").pop();
-	// 						var orientationBase = sep1.split("Agendada;").shift();
-	// 						//console.log(orientationBase);
-
-	// 						Tasks.update({dealID: tasks[i].dealID}, {
-	// 							taskStatus: "Confirmada",
-	// 							orientation: "Nome do cliente: "+ orientationBase + "Confirmada;"
-	// 						}, function(err, numberAffected, rawResponse) {
-	// 						   //handle it
-	// 						})
-
-	// 						var options = { method: 'PUT',
-	// 						url: 'https://app.auvo.com.br/api/v1.0/tasks/'+tasks[i].taskID,
-	// 						headers: 
-	// 							{	 
-	// 							'Content-Type': 'application/json' 
-	// 							},
-	// 						body: 
-	// 							{ 
-	// 							appKey: '4poDGohC1kg6jF5wC8f9RKElmcwxsr49',
-	// 							token: 'o8EDGohC1kjNAzoeTN7dSKVUvbSRRmeE',
-	// 							orientation: "Nome do cliente: "+ orientationBase + "Confirmada;"
-	// 							},
-	// 							json: true };
-
-	// 							request(options, function (error, response, body) {
-	// 								if (error) throw new Error(error);
-	// 								//console.log(body);
-	// 						 	});
-
-	// 					} else {
-	// 						console.log('nothing to do');
-	// 					}
-	// 				callback(null);
-	// 				}
-	// 			],function(err){
-	// 				console.log('Tarefa no Auvo Atualizada')
-	// 			});
-
-	// 			//console.log('chegou aqui');
-	// 			var check = false;
-	// 			return check;
-	// 		}			
-	// 	})
-		
-	// }
 
 };

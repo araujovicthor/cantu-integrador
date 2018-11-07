@@ -168,14 +168,10 @@ const job = new CronJob('*/5 * * * * *', function() {
 				repoFunction.checkConfirmation(tasks[i].taskID, tasks[i].dealID, tasks[i].taskDate);
 			} else {
 				repoFunction.checkReminder(tasks[i].taskID, tasks[i].dealID, tasks[i].taskDate);
+
 			}
 		}
 	})
-
-	//console.log('tchau');
-
-	//var timeNow = startDate;
-	//repoFunction.confirmaVisita(statusNow, timeNow);
 
 })
 
