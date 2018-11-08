@@ -66,7 +66,7 @@ var endDate = "2018-11-08T23:59:59";
 const CronJob = require('cron').CronJob;
 //console.log('Cron for every minute');
 //console.log('Before job instantiation');
-const job = new CronJob('*/5 * * * * *', function() {
+const job = new CronJob('*/30 * * * * *', function() {
 	const d = new Date();
 	console.log('Every minute:', d);
 	var url =
