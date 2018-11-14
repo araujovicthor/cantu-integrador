@@ -57,10 +57,10 @@ router.use(function(req, res, next) {
 //API's:
 //==============================================================================
 
-var appKey = "4poDGohC1kg6jF5wC8f9RKElmcwxsr49";
-var token = "o8EDGohC1kjNAzoeTN7dSKVUvbSRRmeE";
-var startDate = "2018-11-07T00:00:01";
-var endDate = "2018-11-08T23:59:59";
+var appKey = "mI4A71BK1khorvhSawivTZWgkCfbK8YM";
+var token = "mI4A71BK1khUxdEbxNvTYm0U1XKFa0A";
+var startDate = "2018-11-14T00:00:01";
+var endDate = "2018-11-20T23:59:59";
 //var lastUpdated = "2018-11-06T12:00:00";
 
 const CronJob = require('cron').CronJob;

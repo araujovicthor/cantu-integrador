@@ -45,6 +45,10 @@ var TasksSchema = new Schema({
     imovelURL: String,
     codImovel: String,
     taskStatus: String,
+    company: String,
+    brokerEmail: String,
+    brokerPhone: String,
+    brokerName: String,
     value: Number
 });
 

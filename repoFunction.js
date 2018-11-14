@@ -4,7 +4,7 @@ var https = require("https");
 const axios = require("axios");
 var async = require('async');
 var Pipedrive = require("pipedrive");
-var pipedrive = new Pipedrive.Client('204369674ebaff427f06a5ab1e4e0bef2fe10c1a', { strictMode: true });
+var pipedrive = new Pipedrive.Client('0172f3b248eb7e489ba324c54e6c921da05733de', { strictMode: true });
 var request = require("request");
 
 module.exports = {
@@ -30,7 +30,7 @@ module.exports = {
 	},
 
 	checkOutFromAuvo: async function(auvoID, pipedriveID) {
-		pipedrive.Deals.update (pipedriveID, {stage_id: 26}, function(err, dealsPipedrive){
+		pipedrive.Deals.update (pipedriveID, {stage_id: 6}, function(err, dealsPipedrive){
 		});
 
 		Tasks.findOne({taskID: auvoID}, function (err, tasks) {
@@ -47,8 +47,9 @@ module.exports = {
 			},
 			body: 
 			{ 
-				appKey: '4poDGohC1kg6jF5wC8f9RKElmcwxsr49',
-				token: 'o8EDGohC1kjNAzoeTN7dSKVUvbSRRmeE',
+				//criar nova conta de teste na Auvo
+				appKey: 'mI4A71BK1khorvhSawivTZWgkCfbK8YM',
+				token: 'mI4A71BK1khUxdEbxNvTYm0U1XKFa0A',
 				closeTask: true
 			},
 			json: true 
@@ -74,7 +75,7 @@ module.exports = {
 			console.log("Mais que 24h para a visita na verificação da função. Nada a fazer.");
 		} else {
 			console.log("Falta menos que 24h para a visita. Enviar Confirmação.");
-			pipedrive.Deals.update (pipedriveID, {stage_id: 24}, function(err, dealsPipedrive){
+			pipedrive.Deals.update (pipedriveID, {stage_id: 3}, function(err, dealsPipedrive){
 			});
 			Tasks.findOne({taskID: auvoID}, function (err, tasks) {
 				if (err) return console.log(err);
@@ -98,7 +99,7 @@ module.exports = {
 			console.log("Mais que 3h para a visita na verificação da função. Nada a fazer.");
 		}else {
 			console.log("Falta menos que 3h para a visita. Enviar Lembrete.");
-			pipedrive.Deals.update (pipedriveID, {stage_id: 25}, function(err, dealsPipedrive){
+			pipedrive.Deals.update (pipedriveID, {stage_id: 5}, function(err, dealsPipedrive){
 			});
 			Tasks.findOne({taskID: auvoID}, function (err, tasks) {
 				if (err) return console.log(err);
@@ -157,6 +158,20 @@ module.exports = {
 				if (error) throw new Error(error);
 				dataBM = JSON.parse(dataBM);
 				tasks.value = dataBM[0].valor;
+				//alterar no futuro para identificar de qual imobiliária é o imóvel
+				tasks.company = "Beiramar";
+			});
+
+			var appKey= 'mI4A71BK1khorvhSawivTZWgkCfbK8YM';
+			var token= 'mI4A71BK1khUxdEbxNvTYm0U1XKFa0A';
+
+			request('https://app.auvo.com.br/api/v1.0/users/'+data.idUserTo+'?appkey='+appKey+'&token='+token, function (error, response, body) {
+  				//console.log('Status:', response.statusCode);
+  				//console.log('Headers:', JSON.stringify(response.headers));
+				//console.log('Response:', body);
+				body = JSON.parse(body);
+				tasks.brokerName = body.name;
+				tasks.brokerPhone = body.smartPhoneNumber;  
 			});
 
 			tasks.taskID = data.taskID;
@@ -184,6 +199,7 @@ module.exports = {
 			tasks.imovelURL = imovelURL;
 			tasks.codImovel = codImovel;
 			tasks.taskStatus = taskStatus;
+			
 
 
 			async.waterfall([
@@ -193,7 +209,7 @@ module.exports = {
 					});
 				},
 				function (personPipedrive, callback){
-					pipedrive.Deals.add ({title: tasks.taskID, person_id: personPipedrive.id, value: tasks.value, stage_id: 1, '977276d6dab083489d6b8eea14ab2d7b5a2f71d7': tasks.taskDate, 'e7a5b03d9ea943031b93ef00658cb0bcdd3bc296': tasks.address}, function(err, dealsPipedrive){
+					pipedrive.Deals.add ({title: tasks.taskID, person_id: personPipedrive.id, value: tasks.value, stage_id: 2, '47ecfa61caef73390778cdb331cee42edf145343': tasks.taskDate, '5cd0af21123a69d407aa94cd7027d3b129cc5bd0': tasks.address, 'c979f2a014f340ec8788fa795b67955a23cfc8d8': tasks.imovelURL, 'a41ea2865911a717310c81a5b5a25616d4ad252b': tasks.company, '6d5bd1673d4cdaa3773ae8055efbf06a13959157': tasks.brokerName, '4c80ed1f887baee0afaf2672cb1b2081782b8bc4': tasks.brokerPhone}, function(err, dealsPipedrive){
 					tasks.dealID = dealsPipedrive.id;
 					console.log('Salvando tarefa');
 					tasks.save();
@@ -231,7 +247,7 @@ module.exports = {
 						});
 					},
 					function(dealPipedrive, callback){
-						if(dealPipedrive.pipeline_id == 1 && dealPipedrive.stage_id == 2){
+						if(dealPipedrive.pipeline_id == 1 && dealPipedrive.stage_id == 4){
 							//console.log("dentro do fluxo");
 							
 							//console.log(tasks[i].orientation);
@@ -254,8 +270,8 @@ module.exports = {
 								},
 							body: 
 								{ 
-								appKey: '4poDGohC1kg6jF5wC8f9RKElmcwxsr49',
-								token: 'o8EDGohC1kjNAzoeTN7dSKVUvbSRRmeE',
+								appKey: 'mI4A71BK1khorvhSawivTZWgkCfbK8YM',
+								token: 'mI4A71BK1khUxdEbxNvTYm0U1XKFa0A',
 								orientation: "Nome do cliente: "+ orientationBase + "Confirmada;"
 								},
 								json: true 
